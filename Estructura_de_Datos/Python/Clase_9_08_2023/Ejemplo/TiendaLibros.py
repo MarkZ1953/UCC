@@ -1,5 +1,5 @@
 import locale
-from Estructura_de_Datos.Clase_9_08_2023.Ejemplo.Libro import Libro
+from Clase_9_08_2023.Ejemplo.Libro import Libro
 
 
 class TiendaLibros:

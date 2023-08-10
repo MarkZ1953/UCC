@@ -1,4 +1,4 @@
-package UCC.Momento_1.Actividad_de_Aprendizaje_2;
+package Clase_17_02_2023.Actividad_de_Aprendizaje_2;
 import java.util.Scanner;
 
 public class Horas_Trabajadas {
