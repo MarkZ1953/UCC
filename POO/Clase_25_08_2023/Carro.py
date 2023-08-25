@@ -1,10 +1,11 @@
 # Metodo	Tipo	Atributos	Resultados	Comprobaciones
 # CONSTRUCTOR	???	Ninguno	Inicializar cadenas en "", numeros en 0 y booleano en falso
 
-# desacelerar	público	Velocidad	Disminuye la velocidad	comprueba la velocidad respecto a la minima
-# viaje	público	Tiempo y Velocidad	disminuye la cantidad de combustible segun el consumo si puede completar el viaje	comprueba el estado y cantidad de combustible
-# mostrar la información del carro	público	Ninguno
-# Si la salida de alguno de los metodos no cumple con la comprobación se debe generar un ERROR en el Metodo, así si el carro esta apagado y se acelera debe devolver ERROR ACELERAR
+# desacelerar	público	Velocidad	Disminuye la velocidad	comprueba la velocidad respecto a la minima viaje
+# público	Tiempo y Velocidad	disminuye la cantidad de combustible segun el consumo si puede completar el viaje
+# comprueba el estado y cantidad de combustible mostrar la información del carro	público	Ninguno Si la salida de
+# alguno de los metodos no cumple con la comprobación se debe generar un ERROR en el Metodo, así si el carro esta
+# apagado y se acelera debe devolver ERROR ACELERAR
 
 class Carro:
     def __init__(self, modelo: str, color: str, velocidadMaxima: float, velocidad: float, combustibleMaximo: int,
@@ -108,14 +109,15 @@ class Carro:
               f"{consumoGasolina} galones")
 
     def obtenerInformacionCarro(self):
-        return (f"Modelo: {self.getModelo}"
-                f"\nColor: {self.getColor}"
-                f"\nVelocidad Maxima: {self.getVelocidadMaxima}"
-                f"\nVelocidad: {self.getVelocidad}"
-                f"\nCombustible Maximo: {self.getCombustibleMaximo}"
-                f"\nCombustible: {self.getCombustible}"
-                f"\nEstado: {self.getEstado}"
-                f"\nConsumo: {self.getConsumo}")
+        print(f"{self.getModelo}".center(40, "-"))
+        print(f"Color: {self.getColor}"
+              f"\nVelocidad Maxima: {self.getVelocidadMaxima}"
+              f"\nVelocidad: {self.getVelocidad}"
+              f"\nCombustible Maximo: {self.getCombustibleMaximo}"
+              f"\nCombustible: {self.getCombustible}"
+              f"\nEstado: {self.getEstado}"
+              f"\nConsumo: {self.getConsumo}")
+        print("".center(40, "-"))
 
 
 if __name__ == '__main__':
@@ -126,6 +128,9 @@ if __name__ == '__main__':
     carro.encender()
     carro.acelerar(300)
     carro.acelerar(100)
-    print(carro.obtenerInformacionCarro())
+    carro.obtenerInformacionCarro()
     carro.apagar()
     carro.acelerar(100)
+    carro.encender()
+    carro.acelerar(20)
+    carro.viaje(10)
