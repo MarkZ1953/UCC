@@ -1,12 +1,3 @@
-# Metodo	Tipo	Atributos	Resultados	Comprobaciones
-# CONSTRUCTOR	???	Ninguno	Inicializar cadenas en "", numeros en 0 y booleano en falso
-
-# desacelerar	público	Velocidad	Disminuye la velocidad	comprueba la velocidad respecto a la minima viaje
-# público	Tiempo y Velocidad	disminuye la cantidad de combustible segun el consumo si puede completar el viaje
-# comprueba el estado y cantidad de combustible mostrar la información del carro	público	Ninguno Si la salida de
-# alguno de los metodos no cumple con la comprobación se debe generar un ERROR en el Metodo, así si el carro esta
-# apagado y se acelera debe devolver ERROR ACELERAR
-
 class Carro:
     """
     Clase que representa un carro con características como modelo, color, velocidad, combustible, etc.
