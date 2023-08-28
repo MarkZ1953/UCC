@@ -8,8 +8,23 @@
 # apagado y se acelera debe devolver ERROR ACELERAR
 
 class Carro:
+    """
+    Clase que representa un carro con características como modelo, color, velocidad, combustible, etc.
+    """
     def __init__(self, modelo: str, color: str, velocidadMaxima: float, velocidad: float, combustibleMaximo: int,
                  combustible: int, estado: bool, consumo: float):
+        """
+           Inicializa una instancia de la clase Carro.
+
+           :param modelo: Modelo del carro.: str
+           :param color: Color del carro.: str
+           :param velocidadMaxima: Velocidad máxima permitida para el carro en km/h.: float
+           :param velocidad: Velocidad actual del carro en km/h.: float
+           :param combustibleMaximo: Capacidad máxima del tanque de combustible en litros.: int
+           :param combustible: Cantidad actual de combustible en el tanque en litros.: int
+           :param estado: Estado del carro (encendido o apagado): bool.
+           :param consumo: Consumo de combustible en km/l: float.
+       """
         self.__modelo = modelo
         self.__color = color
         self.__velocidadMaxima = velocidadMaxima
@@ -56,6 +71,9 @@ class Carro:
         return self.__consumo
 
     def apagar(self):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         if self.getEstado:
             if self.getVelocidad == 0:
                 self.setEstado = False
@@ -68,6 +86,9 @@ class Carro:
             print("El auto ya se encuentra apagado.")
 
     def encender(self):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         if self.getEstado:
             print("El auto ya se encuentra encendido.")
         else:
@@ -75,6 +96,9 @@ class Carro:
             print("El auto se ha encendido.")
 
     def acelerar(self, aceleracion: float):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         if self.getEstado:
             if self.getVelocidad + aceleracion <= self.getVelocidadMaxima:
                 self.__velocidad += aceleracion
@@ -85,6 +109,9 @@ class Carro:
             print("El auto esta apagado, no se puede acelerar.")
 
     def desacelerar(self, desaceleracion: float):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         if self.getEstado:
             if self.getVelocidad - abs(desaceleracion) >= 0:
                 self.__velocidad -= desaceleracion
@@ -96,6 +123,9 @@ class Carro:
             print("El auto esta apagado, no se puede desacelerar.")
 
     def repostar(self, combustible):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         if self.getEstado and self.getVelocidad < 0:
             print("No se ha podido repostar el auto, ya que se encuentra en movimiento o esta encendido.")
         else:
@@ -103,12 +133,18 @@ class Carro:
                   f"{self.getCombustible + combustible}/{self.getCombustibleMaximo}")
 
     def viaje(self, tiempoRecorrido: float):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         distanciaRecorrida = tiempoRecorrido * self.getVelocidad
         consumoGasolina = distanciaRecorrida / self.getConsumo
-        print(f"El auto a una velocidad de {self.getVelocidad} km/h en {tiempoRecorrido} horas ha consumido"
-              f"{consumoGasolina} galones")
+        print(f"El auto a una velocidad de {self.getVelocidad} km/h en {tiempoRecorrido} horas ha consumido "
+              f"{consumoGasolina} litros")
 
     def obtenerInformacionCarro(self):
+        """
+        Apaga el carro, reduciendo la velocidad a cero y cambiando el estado a apagado si es posible.
+        """
         print(f"{self.getModelo}".center(40, "-"))
         print(f"Color: {self.getColor}"
               f"\nVelocidad Maxima: {self.getVelocidadMaxima}"
