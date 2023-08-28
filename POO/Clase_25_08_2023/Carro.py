@@ -48,7 +48,7 @@ class Carro:
         return self.__estado
 
     @getEstado.setter
-    def setEstado(self, estado):
+    def setEstado(self, estado: bool):
         self.__estado = estado
 
     @property
@@ -105,7 +105,7 @@ class Carro:
     def viaje(self, tiempoRecorrido: float):
         distanciaRecorrida = tiempoRecorrido * self.getVelocidad
         consumoGasolina = distanciaRecorrida / self.getConsumo
-        print(f"El auto a una velocidad de {self.getVelocidad} km/h en {tiempoRecorrido} horas ha consumido "
+        print(f"El auto a una velocidad de {self.getVelocidad} km/h en {tiempoRecorrido} horas ha consumido"
               f"{consumoGasolina} galones")
 
     def obtenerInformacionCarro(self):
