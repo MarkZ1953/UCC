@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QApplication, QGroupBox, QVBoxLayout, QWidget, QHBoxLayout, QPushButton
 
-from ServGeologicoFelipeCastro.Interfaz.Ventanas.TablaInformacion import TablaInformacion
+from Interfaz.Ventanas.TablaInformacion import TablaInformacion
 
 
 class VentanaPrincipal(QMainWindow):

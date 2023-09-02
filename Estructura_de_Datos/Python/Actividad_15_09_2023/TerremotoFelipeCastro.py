@@ -17,4 +17,3 @@ if __name__ == '__main__':
     appTerremotoFelipeCastro = TerremotoFelipeCastro("Caos", "30/08/2023",
                                                      5.6, "Meta",
                                                      10)
-    appTerremotoFelipeCastro.registrarTerremotoFelipeCastro()
