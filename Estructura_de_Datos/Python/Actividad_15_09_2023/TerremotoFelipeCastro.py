@@ -6,30 +6,6 @@ class TerremotoFelipeCastro:
         self.__departamentoOcurrencia = departamentoTerremoto
         self.__numeroMuertosAprox = numeroMuertosAprox
 
-    def ordenarTerremotosPorNombreFelipeCastro(self):
-        pass
-
-    def ordenarPorNumeroDeMuertosFelipeCastro(self):
-        pass
-
-    def buscarTerremotoEspecificoFelipeCastro(self):
-        pass
-
-    def registrarTerremotoFelipeCastro(self):
-        pass
-
-    def buscarTerremotoPorNombreFelipeCastro(self):
-        pass
-
-    def buscarTerremotoPorNumeroDeMuertosFelipeCastro(self):
-        pass
-
-    def buscarTerremotoConMenosMuertos(self):
-        pass
-
-    def buscarTerremotoConMayorMagnitud(self):
-        pass
-
     @property
     def getNombre(self):
         return self.__nombreTerremoto

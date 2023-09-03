@@ -1,10 +1,10 @@
 import locale
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QTableWidgetItem, QTableWidget, QHeaderView
 
 from Base_de_Datos.TerremotosDB import InformacionTerremotos
+from Interfaz.VentanaDetalles.DetalleTerremoto import DetalleTerremoto
 
 
 class TablaInformacion(QTableWidget):
@@ -21,7 +21,9 @@ class TablaInformacion(QTableWidget):
         # Llamamos al metodo txtPara poder ingresarle los valores de la base de datos a la tabla
         self.actualizarTablaInformacion()
 
-        # self.cellClicked.connect(self.celdaSeleccionada)
+        self.detalleTerremoto = DetalleTerremoto()
+
+        self.cellClicked.connect(self.celdaSeleccionada)
 
         # Ajustar tamaño de columnas y filas
         self.resizeColumnsToContents()
@@ -58,12 +60,18 @@ class TablaInformacion(QTableWidget):
             self.item(fila, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def celdaSeleccionada(self, row, column):
-        if column == 0:
-            id_persona = self.item(row, column)
+        nombreTerremoto = self.item(row, 0)
+        fechaTerremoto = self.item(row, 1)
+        magnitudTerremoto = self.item(row, 2)
+        departamentoTerremoto = self.item(row, 3)
+        noMuertosTerremoto = self.item(row, 4)
 
-            if not self.detalleInquilino.isVisible():
-                self.detalleInquilino.show()
-            else:
-                self.detalleInquilino.raise_()
-
-            self.detalleInquilino.frame_persona.cambiarValores(id_persona.text().replace(".", ""))
+        if not self.detalleTerremoto.isVisible():
+            self.detalleTerremoto.txtNombreTerremoto.setText(nombreTerremoto.text())
+            self.detalleTerremoto.txtMagnitudTerremoto.setText(fechaTerremoto.text())
+            self.detalleTerremoto.txtFechaTerremoto.setText(magnitudTerremoto.text())
+            self.detalleTerremoto.txtNumeroMuertosTerremoto.setText(departamentoTerremoto.text())
+            self.detalleTerremoto.txtDepartamentoTerremoto.setText(noMuertosTerremoto.text())
+            self.detalleTerremoto.show()
+        else:
+            self.detalleTerremoto.raise_()

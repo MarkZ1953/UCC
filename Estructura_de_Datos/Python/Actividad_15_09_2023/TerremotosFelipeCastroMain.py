@@ -1,11 +1,12 @@
 import locale
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QMainWindow, QApplication, QGroupBox, QVBoxLayout, QWidget, QHBoxLayout, QPushButton, \
     QMessageBox, QGridLayout, QComboBox, QTableWidgetItem
 
+from Interfaz.VentanaDetalles.DetalleTerremoto import DetalleTerremoto
 from Interfaz.Ventanas.TablaInformacion import TablaInformacion
+from Interfaz.Ventanas.VentanaBuscar import VentanaBuscar
 from Interfaz.Ventanas.VentanaRegistro import VentanaRegistro
 from TerremotoFelipeCastro import TerremotoFelipeCastro
 
@@ -27,10 +28,24 @@ class VentanaPrincipal(QMainWindow):
 
         # Importamos las ventanas
         self.ventanaRegistrarTerremoto = VentanaRegistro()
+        self.ventanaBuscarTerremoto = VentanaBuscar()
+        self.ventanaDetalleTerremoto = DetalleTerremoto()
+
+        # Agregamos las funciones a la ventana de buscar
+        self.ventanaBuscarTerremoto.btnSalir.clicked.connect(lambda: self.ventanaBuscarTerremoto.close())
+        self.ventanaBuscarTerremoto.btnMayorNumeroMuertos.clicked.connect(self.buscarTerremotoConMayorNumeroDeMuertosFelipeCastro)
+        self.ventanaBuscarTerremoto.btnBuscarPorNumeroMuertos.clicked.connect(self.buscarTerremotoPorNumeroDeMuertosFelipeCastro)
+        self.ventanaBuscarTerremoto.btnMenorNumeroMuertos.clicked.connect(self.buscarTerremotoConMenorNumeroDeMuertos)
+        self.ventanaBuscarTerremoto.btnBuscarPorNombre.clicked.connect(self.buscarTerremotoPorNombreFelipeCastro)
+        self.ventanaBuscarTerremoto.btnMayorMagnitud.clicked.connect(self.buscarTerremotoConMayorMagnitud)
+        self.ventanaBuscarTerremoto.btnMenorMagnitud.clicked.connect(self.buscarTerremotoConMenorMagnitud)
 
         # Agregamos las funciones a la ventana de registrar
         self.ventanaRegistrarTerremoto.btnAceptar.clicked.connect(self.registrarTerremotoFelipeCastro)
         self.ventanaRegistrarTerremoto.btnSalir.clicked.connect(lambda: self.ventanaRegistrarTerremoto.close())
+
+        # Agregamos las funciones a la ventana de detalle
+        self.ventanaDetalleTerremoto.btnSalir.clicked.connect(lambda: self.ventanaDetalleTerremoto.close())
 
         self.tablaInformacion = TablaInformacion()
 
@@ -65,6 +80,7 @@ class VentanaPrincipal(QMainWindow):
 
         btnBuscar = QPushButton("Buscar")
         btnBuscar.setFixedSize(120, 40)
+        btnBuscar.clicked.connect(self.abrirVentanaBuscar)
         layoutFunciones.addWidget(btnBuscar)
 
         self.cbOrdenamiento = QComboBox()
@@ -173,6 +189,89 @@ class VentanaPrincipal(QMainWindow):
         self.tablaInformacion.setRowCount(0)
         self.tablaInformacion.actualizarTablaInformacion()
 
+    def buscarTerremotoPorNombreFelipeCastro(self):
+        nombreTerremoto = self.ventanaBuscarTerremoto.txtNombreTerremoto.text()
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+        terremotoPorNombre = ""
+
+        for terremoto in terremotos:
+            if nombreTerremoto.lower() == terremoto.getNombre.lower():
+                terremotoPorNombre = terremoto
+
+        self.ventanaBuscarTerremoto.txtNombreTerremoto.setText(terremotoPorNombre.getNombre)
+        self.ventanaBuscarTerremoto.txtFechaTerremoto.setText(terremotoPorNombre.getFecha)
+        self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoPorNombre.getMagnitud))
+        self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoPorNombre.getDepartamento)
+        self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoPorNombre.getNumeroMuertos))
+
+
+    def buscarTerremotoPorNumeroDeMuertosFelipeCastro(self):
+        pass
+
+    def buscarTerremotoConMayorNumeroDeMuertosFelipeCastro(self):
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+        tempNumMayor = terremotos[0].getNumeroMuertos
+        terremotoNumMuertosMayor = terremotos[0]
+
+        for terremoto in terremotos:
+            if tempNumMayor < terremoto.getNumeroMuertos:
+                tempNumMayor = terremoto.getNumeroMuertos
+                terremotoNumMuertosMayor = terremoto
+
+        self.ventanaBuscarTerremoto.txtNombreTerremoto.setText(terremotoNumMuertosMayor.getNombre)
+        self.ventanaBuscarTerremoto.txtFechaTerremoto.setText(terremotoNumMuertosMayor.getFecha)
+        self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoNumMuertosMayor.getMagnitud))
+        self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoNumMuertosMayor.getDepartamento)
+        self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoNumMuertosMayor.getNumeroMuertos))
+
+    def buscarTerremotoConMenorNumeroDeMuertos(self):
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+        tempNumMenor = terremotos[0].getNumeroMuertos
+        terremotoNumMuertosMenor = terremotos[0]
+
+        for terremoto in terremotos:
+            if tempNumMenor > terremoto.getNumeroMuertos:
+                tempNumMenor = terremoto.getNumeroMuertos
+                terremotoNumMuertosMenor = terremoto
+
+        self.ventanaBuscarTerremoto.txtNombreTerremoto.setText(terremotoNumMuertosMenor.getNombre)
+        self.ventanaBuscarTerremoto.txtFechaTerremoto.setText(terremotoNumMuertosMenor.getFecha)
+        self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoNumMuertosMenor.getMagnitud))
+        self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoNumMuertosMenor.getDepartamento)
+        self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoNumMuertosMenor.getNumeroMuertos))
+
+    def buscarTerremotoConMenorMagnitud(self):
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+        tempMenorMagnitud = terremotos[0].getMagnitud
+        terremotoMenorMagnitud = terremotos[0]
+
+        for terremoto in terremotos:
+            if tempMenorMagnitud > terremoto.getMagnitud:
+                tempMenorMagnitud = terremoto.getMagnitud
+                terremotoMenorMagnitud = terremoto
+
+        self.ventanaBuscarTerremoto.txtNombreTerremoto.setText(terremotoMenorMagnitud.getNombre)
+        self.ventanaBuscarTerremoto.txtFechaTerremoto.setText(terremotoMenorMagnitud.getFecha)
+        self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoMenorMagnitud.getMagnitud))
+        self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoMenorMagnitud.getDepartamento)
+        self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoMenorMagnitud.getNumeroMuertos))
+
+    def buscarTerremotoConMayorMagnitud(self):
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+        tempMayorMagnitud = terremotos[0].getMagnitud
+        terremotoMayorMagnitud = terremotos[0]
+
+        for terremoto in terremotos:
+            if tempMayorMagnitud < terremoto.getMagnitud:
+                tempMayorMagnitud = terremoto.getMagnitud
+                terremotoMayorMagnitud = terremoto
+
+        self.ventanaBuscarTerremoto.txtNombreTerremoto.setText(terremotoMayorMagnitud.getNombre)
+        self.ventanaBuscarTerremoto.txtFechaTerremoto.setText(terremotoMayorMagnitud.getFecha)
+        self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoMayorMagnitud.getMagnitud))
+        self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoMayorMagnitud.getDepartamento)
+        self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoMayorMagnitud.getNumeroMuertos))
+
     def ordenarTablaInformacion(self, arreglo):
         datos = arreglo
         locale.setlocale(locale.LC_ALL, '')
@@ -211,9 +310,16 @@ class VentanaPrincipal(QMainWindow):
         else:
             self.ventanaRegistrarTerremoto.show()
 
+    def abrirVentanaBuscar(self):
+        if self.ventanaBuscarTerremoto.isVisible():
+            self.ventanaBuscarTerremoto.close()
+        else:
+            self.ventanaBuscarTerremoto.show()
+
     def closeEvent(self, event) -> None:
         ventanas = [
-            self.ventanaRegistrarTerremoto
+            self.ventanaRegistrarTerremoto,
+            self.ventanaBuscarTerremoto
         ]
         for ventana in ventanas:
             if ventana.isVisible():
