@@ -1,4 +1,5 @@
 from ConexionDB import TerremotosDBFelipeCastro
+from TerremotoFelipeCastro import TerremotoFelipeCastro
 
 
 class InformacionTerremotos:
@@ -7,17 +8,31 @@ class InformacionTerremotos:
     SELECCIONARTODOS = "SELECT * FROM Terremotos"
 
     @classmethod
-    def registrarTerremoto(cls, ciudad, fecha, magnitud, departamento, noMuertos):
+    def registrarTerremoto(cls, terremoto):
         with TerremotosDBFelipeCastro() as cursor:
-            cursor.execute(cls.REGISTRAR, (ciudad, fecha, magnitud, departamento, noMuertos))
+            cursor.execute(cls.REGISTRAR, (terremoto.getCiudad,
+                                           terremoto.getFecha,
+                                           terremoto.getMagnitud,
+                                           terremoto.getDepartamento,
+                                           terremoto.getNumeroMuertos))
+
+    @classmethod
+    def seleccionarTodosLosTerremotosObj(cls):
+        with TerremotosDBFelipeCastro() as cursor:
+            cursor.execute(cls.SELECCIONARTODOS)
+            terremotos = []
+
+            for terremoto in cursor.fetchall():
+                terremotos.append(TerremotoFelipeCastro(terremoto[0],
+                                                        terremoto[1],
+                                                        terremoto[2],
+                                                        terremoto[3],
+                                                        terremoto[4]))
+
+            return terremotos
 
     @classmethod
     def seleccionarTodosLosTerremotos(cls):
         with TerremotosDBFelipeCastro() as cursor:
             cursor.execute(cls.SELECCIONARTODOS)
             return cursor.fetchall()
-
-
-if __name__ == '__main__':
-    db = InformacionTerremotos()
-    db.registrarTerremoto("Villavicencio", "30/08/2023", 5.6, "Meta", 3)

@@ -11,7 +11,7 @@ class TablaInformacion(QTableWidget):
     def __init__(self):
         super().__init__()
 
-        cabezeras = ["Id Terremoto", "Ciudad", "Fecha", "Magnitud", "Departamento", "No.Muertos Aprox"]
+        cabezeras = ["Nombre", "Fecha", "Magnitud", "Departamento", "No.Muertos Aprox"]
         self.setColumnCount(len(cabezeras))
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
@@ -19,50 +19,43 @@ class TablaInformacion(QTableWidget):
         self.setHorizontalHeaderLabels(cabezeras)
 
         # Llamamos al metodo txtPara poder ingresarle los valores de la base de datos a la tabla
-        self.actualizarTablaInquilinos()
+        self.actualizarTablaInformacion()
 
         # self.cellClicked.connect(self.celdaSeleccionada)
 
         # Ajustar tamaño de columnas y filas
         self.resizeColumnsToContents()
 
-    def actualizarTablaInquilinos(self):
+    def actualizarTablaInformacion(self):
 
         datos = InformacionTerremotos.seleccionarTodosLosTerremotos()
         locale.setlocale(locale.LC_ALL, '')
 
-        for fila, (idTerremoto, cedula, nombres, apellidos, telefono, correo) in enumerate(datos):
+        for fila, (nombreTerremoto, fechaTerremoto, magnitudTerremoto, departamentoTerremoto,
+                   noMuertosTerremoto) in enumerate(datos):
 
             self.insertRow(fila)
             self.setRowHeight(fila, 30)
 
-            self.setItem(fila, 0, QTableWidgetItem(locale.format_string('%d', idTerremoto, grouping=True)))
+            self.setItem(fila, 0, QTableWidgetItem(nombreTerremoto))
             self.item(fila, 0).setFlags(~Qt.ItemFlag.ItemIsEditable)
-            # self.item(fila, 0).setForeground(QBrush(QColor("blue")))
-            self.item(fila, 0).setFont(QFont("Roboto", 10, QFont.Bold))
             self.item(fila, 0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            self.setItem(fila, 1, QTableWidgetItem(cedula))
+            self.setItem(fila, 1, QTableWidgetItem(fechaTerremoto))
             self.item(fila, 1).setFlags(~Qt.ItemFlag.ItemIsEditable)
-            # self.item(fila, 0).setForeground(QBrush(QColor("blue")))
-            self.item(fila, 1).setFont(QFont("Roboto", 10, QFont.Bold))
             self.item(fila, 1).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            self.setItem(fila, 2, QTableWidgetItem(nombres))
+            self.setItem(fila, 2, QTableWidgetItem(str(magnitudTerremoto)))
             self.item(fila, 2).setFlags(~Qt.ItemFlag.ItemIsEditable)
             self.item(fila, 2).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            self.setItem(fila, 3, QTableWidgetItem(str(apellidos)))
+            self.setItem(fila, 3, QTableWidgetItem(departamentoTerremoto))
             self.item(fila, 3).setFlags(~Qt.ItemFlag.ItemIsEditable)
             self.item(fila, 3).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            self.setItem(fila, 4, QTableWidgetItem(str(telefono)))
+            self.setItem(fila, 4, QTableWidgetItem(str(noMuertosTerremoto)))
             self.item(fila, 4).setFlags(~Qt.ItemFlag.ItemIsEditable)
             self.item(fila, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-
-            self.setItem(fila, 5, QTableWidgetItem(str(correo)))
-            self.item(fila, 5).setFlags(~Qt.ItemFlag.ItemIsEditable)
-            self.item(fila, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def celdaSeleccionada(self, row, column):
         if column == 0:
