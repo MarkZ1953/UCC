@@ -3,14 +3,14 @@ from TerremotoFelipeCastro import TerremotoFelipeCastro
 
 
 class InformacionTerremotos:
-    REGISTRAR = ("INSERT INTO Terremotos (ciudad, fecha, magnitud, departamento, noMuertos) "
-                 "VALUES(?, ?, ?, ?, ?)")
+    REGISTRAR = ("INSERT INTO Terremotos (nombreTerremoto, fechaTerremoto, magnitudTerremoto, departamentoTerremoto,"
+                 "noMuertosTerremoto) VALUES(?, ?, ?, ?, ?)")
     SELECCIONARTODOS = "SELECT * FROM Terremotos"
 
     @classmethod
     def registrarTerremoto(cls, terremoto):
         with TerremotosDBFelipeCastro() as cursor:
-            cursor.execute(cls.REGISTRAR, (terremoto.getCiudad,
+            cursor.execute(cls.REGISTRAR, (terremoto.getNombre,
                                            terremoto.getFecha,
                                            terremoto.getMagnitud,
                                            terremoto.getDepartamento,
@@ -27,7 +27,8 @@ class InformacionTerremotos:
                                                         terremoto[1],
                                                         terremoto[2],
                                                         terremoto[3],
-                                                        terremoto[4]))
+                                                        terremoto[4],
+                                                        terremoto[5]))
 
             return terremotos
 

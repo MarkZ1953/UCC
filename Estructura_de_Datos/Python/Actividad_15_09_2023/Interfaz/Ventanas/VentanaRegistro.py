@@ -1,5 +1,7 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QFormLayout, QVBoxLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton
+from PySide6.QtCore import Qt, QDate
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QWidget, QFormLayout, QVBoxLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, \
+    QDateEdit
 
 
 class VentanaRegistro(QWidget):
@@ -17,13 +19,15 @@ class VentanaRegistro(QWidget):
         layoutFormulario = QFormLayout()
         frameFormulario.setLayout(layoutFormulario)
 
-        self.txtCiudadTerremoto = QLineEdit()
-        self.txtCiudadTerremoto.setFixedHeight(30)
-        layoutFormulario.addRow(QLabel("Ciudad"), self.txtCiudadTerremoto)
+        self.txtNombreTerremoto = QLineEdit()
+        self.txtNombreTerremoto.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Nombre"), self.txtNombreTerremoto)
 
-        self.txtFechaTerremoto = QLineEdit()
-        self.txtFechaTerremoto.setFixedHeight(30)
-        layoutFormulario.addRow(QLabel("Fecha"), self.txtFechaTerremoto)
+        self.dateFechaTerremoto = QDateEdit(QDate.currentDate())
+        self.dateFechaTerremoto.setCalendarPopup(True)
+        self.dateFechaTerremoto.setDisplayFormat("dd/MM/yyyy")
+        self.dateFechaTerremoto.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Fecha"), self.dateFechaTerremoto)
 
         self.txtMagnitudTerremoto = QLineEdit()
         self.txtMagnitudTerremoto.setFixedHeight(30)
@@ -47,6 +51,7 @@ class VentanaRegistro(QWidget):
         layoutFunciones.addWidget(self.btnAceptar)
 
         self.btnSalir = QPushButton("Salir")
+        self.btnSalir.setIcon(QIcon(QPixmap("Imagenes/btnCruz.png")))
         self.btnSalir.setFixedSize(120, 40)
         layoutFunciones.addWidget(self.btnSalir)
 
@@ -55,8 +60,8 @@ class VentanaRegistro(QWidget):
         self.setLayout(layoutPrincipal)
 
     def limpiarVentanaRegistro(self):
-        self.txtCiudadTerremoto.setText("")
+        self.txtNombreTerremoto.setText("")
         self.txtMagnitudTerremoto.setText("")
         self.txtNumeroMuertosTerremoto.setText("")
         self.txtDepartamentoTerremoto.setText("")
-        self.txtFechaTerremoto.setText("")
+        self.dateFechaTerremoto.setDate(QDate.currentDate())

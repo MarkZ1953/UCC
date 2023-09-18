@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QWidget, QFormLayout, QVBoxLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton
 
 
@@ -20,7 +21,7 @@ class DetalleTerremoto(QWidget):
         self.txtNombreTerremoto = QLineEdit()
         self.txtNombreTerremoto.setReadOnly(True)
         self.txtNombreTerremoto.setFixedHeight(30)
-        layoutFormulario.addRow(QLabel("Ciudad"), self.txtNombreTerremoto)
+        layoutFormulario.addRow(QLabel("Nombre"), self.txtNombreTerremoto)
 
         self.txtFechaTerremoto = QLineEdit()
         self.txtFechaTerremoto.setReadOnly(True)
@@ -48,6 +49,8 @@ class DetalleTerremoto(QWidget):
         frameFunciones.setLayout(layoutFunciones)
 
         self.btnSalir = QPushButton("Salir")
+        self.btnSalir.setToolTip("Salir de la ventana")
+        self.btnSalir.setIcon(QIcon(QPixmap("Imagenes/btnCruz.png")))
         self.btnSalir.setFixedSize(120, 40)
         self.btnSalir.clicked.connect(lambda: self.close())
         layoutFunciones.addWidget(self.btnSalir)
@@ -55,10 +58,3 @@ class DetalleTerremoto(QWidget):
         layoutPrincipal.addWidget(frameFormulario)
         layoutPrincipal.addWidget(frameFunciones)
         self.setLayout(layoutPrincipal)
-
-    def limpiarVentanaRegistro(self):
-        self.txtNombreTerremoto.setText("")
-        self.txtMagnitudTerremoto.setText("")
-        self.txtNumeroMuertosTerremoto.setText("")
-        self.txtDepartamentoTerremoto.setText("")
-        self.txtFechaTerremoto.setText("")

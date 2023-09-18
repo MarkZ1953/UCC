@@ -1,10 +1,16 @@
 class TerremotoFelipeCastro:
-    def __init__(self, nombreTerremoto, fechaOcurrencia, magnitudTerremoto, departamentoTerremoto, numeroMuertosAprox):
+    def __init__(self, idTerremoto, nombreTerremoto, fechaOcurrencia, magnitudTerremoto, departamentoTerremoto,
+                 numeroMuertosAprox):
+        self.__idTerremoto = idTerremoto
         self.__nombreTerremoto = nombreTerremoto
         self.__fechaOcurrencia = fechaOcurrencia
         self.__magnitudTerremoto = magnitudTerremoto
         self.__departamentoOcurrencia = departamentoTerremoto
         self.__numeroMuertosAprox = numeroMuertosAprox
+
+    @property
+    def getIdTerremoto(self):
+        return self.__idTerremoto
 
     @property
     def getNombre(self):

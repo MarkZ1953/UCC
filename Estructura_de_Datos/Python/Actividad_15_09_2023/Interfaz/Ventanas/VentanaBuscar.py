@@ -10,7 +10,7 @@ class VentanaBuscar(QWidget):
 
         # Agregamos algunas configuraciones a la ventana
         self.setWindowTitle("Buscar Terremoto")
-        self.setFixedSize(600, 320)
+        self.setFixedSize(600, 350)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
         layoutPrincipal = QGridLayout()
@@ -18,6 +18,10 @@ class VentanaBuscar(QWidget):
         frameFormulario = QGroupBox("Informacion Busqueda Terremoto")
         layoutFormulario = QFormLayout()
         frameFormulario.setLayout(layoutFormulario)
+
+        self.txtIdTerremoto = QLineEdit()
+        self.txtIdTerremoto.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Id"), self.txtIdTerremoto)
 
         self.txtNombreTerremoto = QLineEdit()
         self.txtNombreTerremoto.setFixedHeight(30)
@@ -44,11 +48,16 @@ class VentanaBuscar(QWidget):
         layoutBuscarPor.setAlignment(Qt.AlignmentFlag.AlignCenter)
         frameBuscarPor.setLayout(layoutBuscarPor)
 
-        self.btnBuscarPorNombre = QPushButton("Nombre")
-        self.btnBuscarPorNombre.setFixedSize(170, 40)
-        layoutBuscarPor.addWidget(self.btnBuscarPorNombre)
+        self.btnBuscarPorId = QPushButton("Id")
+        self.btnBuscarPorId.setToolTip("Ingresa el id de un terremoto en la casilla 'Id' para buscar el "
+                                       "terremoto")
+        self.btnBuscarPorId.setFixedSize(170, 40)
+        layoutBuscarPor.addWidget(self.btnBuscarPorId)
 
         self.btnBuscarPorNumeroMuertos = QPushButton("Numero de Muertos")
+        self.btnBuscarPorNumeroMuertos.setToolTip(
+            "Ingresa un numero de muertos de un terremoto en la casilla 'No. Muertos Aproximados' para buscar el "
+            "terremoto")
         self.btnBuscarPorNumeroMuertos.setFixedSize(170, 40)
         layoutBuscarPor.addWidget(self.btnBuscarPorNumeroMuertos)
 
@@ -99,6 +108,7 @@ class VentanaBuscar(QWidget):
         self.setLayout(layoutPrincipal)
 
     def limpiarVentanaRegistro(self):
+        self.txtIdTerremoto.setText("")
         self.txtNombreTerremoto.setText("")
         self.txtMagnitudTerremoto.setText("")
         self.txtNumeroMuertosTerremoto.setText("")
