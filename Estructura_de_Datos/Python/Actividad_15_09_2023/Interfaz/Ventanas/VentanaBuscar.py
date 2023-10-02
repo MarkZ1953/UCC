@@ -10,7 +10,7 @@ class VentanaBuscar(QWidget):
 
         # Agregamos algunas configuraciones a la ventana
         self.setWindowTitle("Buscar Terremoto")
-        self.setFixedSize(600, 350)
+        self.setFixedSize(600, 370)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
         layoutPrincipal = QGridLayout()
@@ -42,6 +42,10 @@ class VentanaBuscar(QWidget):
         self.txtNumeroMuertosTerremoto = QLineEdit()
         self.txtNumeroMuertosTerremoto.setFixedHeight(30)
         layoutFormulario.addRow(QLabel("No.Muertos Aproximados"), self.txtNumeroMuertosTerremoto)
+
+        self.txtAyudaEstadoTerremoto = QLineEdit()
+        self.txtAyudaEstadoTerremoto.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Ayuda Estado"), self.txtAyudaEstadoTerremoto)
 
         frameBuscarPor = QGroupBox("Buscar Por")
         layoutBuscarPor = QHBoxLayout()
@@ -114,3 +118,4 @@ class VentanaBuscar(QWidget):
         self.txtNumeroMuertosTerremoto.setText("")
         self.txtDepartamentoTerremoto.setText("")
         self.txtFechaTerremoto.setText("")
+        self.txtAyudaEstadoTerremoto.setText("")

@@ -9,7 +9,7 @@ class DetalleTerremoto(QWidget):
 
         # Agregamos algunas configuraciones a la ventana
         self.setWindowTitle("Detalle Terremoto")
-        self.setFixedSize(600, 240)
+        self.setFixedSize(600, 260)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
         layoutPrincipal = QHBoxLayout()
@@ -42,6 +42,11 @@ class DetalleTerremoto(QWidget):
         self.txtNumeroMuertosTerremoto.setReadOnly(True)
         self.txtNumeroMuertosTerremoto.setFixedHeight(30)
         layoutFormulario.addRow(QLabel("No.Muertos Aproximados"), self.txtNumeroMuertosTerremoto)
+
+        self.txtAyudaEstadoTerremoto = QLineEdit()
+        self.txtAyudaEstadoTerremoto.setReadOnly(True)
+        self.txtAyudaEstadoTerremoto.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Ayuda Estado"), self.txtAyudaEstadoTerremoto)
 
         frameFunciones = QGroupBox("Funciones")
         layoutFunciones = QVBoxLayout()

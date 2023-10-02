@@ -1,13 +1,14 @@
 import locale
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap, QIcon
-from PySide6.QtWidgets import QMainWindow, QApplication, QGroupBox, QVBoxLayout, QWidget, QHBoxLayout, QPushButton, \
-    QMessageBox, QGridLayout, QComboBox, QTableWidgetItem
+from PySide6.QtGui import (QPixmap, QIcon)
+from PySide6.QtWidgets import (QMainWindow, QApplication, QGroupBox, QVBoxLayout, QWidget, QHBoxLayout, QPushButton,
+                               QMessageBox, QGridLayout, QComboBox, QTableWidgetItem)
 
 from Interfaz.VentanaDetalles.DetalleTerremoto import DetalleTerremoto
-from Interfaz.Ventanas.TablaInformacion import TablaInformacion
+from Interfaz.Tablas.TablaInformacion import TablaInformacion
 from Interfaz.Ventanas.VentanaBuscar import VentanaBuscar
+from Interfaz.Ventanas.VentanaEliminar import VentanaEliminar
 from Interfaz.Ventanas.VentanaRegistro import VentanaRegistro
 from TerremotoFelipeCastro import TerremotoFelipeCastro
 
@@ -31,6 +32,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaRegistrarTerremoto = VentanaRegistro()
         self.ventanaBuscarTerremoto = VentanaBuscar()
         self.ventanaDetalleTerremoto = DetalleTerremoto()
+        self.ventanaEliminarTerremoto = VentanaEliminar()
 
         # Agregamos las funciones a la ventana de buscar
         self.ventanaBuscarTerremoto.btnSalir.clicked.connect(lambda: self.ventanaBuscarTerremoto.close())
@@ -50,6 +52,9 @@ class VentanaPrincipal(QMainWindow):
 
         # Agregamos las funciones a la ventana de detalle
         self.ventanaDetalleTerremoto.btnSalir.clicked.connect(lambda: self.ventanaDetalleTerremoto.close())
+
+        # Agregamos las funciones a la ventana de eliminar
+        self.ventanaEliminarTerremoto.btnEliminar.clicked.connect(self.eliminarTerremotoFelipeCastro)
 
         self.tablaInformacion = TablaInformacion()
 
@@ -79,6 +84,13 @@ class VentanaPrincipal(QMainWindow):
         btnRegistrar.clicked.connect(self.abrirVentanaRegistro)
         layoutFunciones.addWidget(btnRegistrar)
 
+        self.btnEliminar = QPushButton("Eliminar")
+        self.btnEliminar.setToolTip("Eliminar un terremoto")
+        self.btnEliminar.setIcon(QIcon(QPixmap("Imagenes/btnMenos.png")))
+        self.btnEliminar.setFixedSize(120, 40)
+        self.btnEliminar.clicked.connect(self.abrirVentanaEliminar)
+        layoutFunciones.addWidget(self.btnEliminar)
+
         self.btnListar = QPushButton("Listar")
         self.btnListar.setToolTip("Listar todos los terremotos por identificacion ascendentemente (Predeterminado)")
         self.btnListar.setIcon(QIcon(QPixmap("Imagenes/btnLibroLista.png")))
@@ -100,6 +112,8 @@ class VentanaPrincipal(QMainWindow):
         self.cbOrdenamiento.addItem("Numero de Muertos (Descendente)", 3)
         self.cbOrdenamiento.addItem("Magnitud (Ascendente)", 4)
         self.cbOrdenamiento.addItem("Magnitud (Descendente)", 5)
+        self.cbOrdenamiento.addItem("Ayuda Estado (Ascendente)", 6)
+        self.cbOrdenamiento.addItem("Ayuda Estado (Descendente)", 7)
         self.cbOrdenamiento.setFixedHeight(40)
         layoutOrdenamiento.addWidget(self.cbOrdenamiento)
 
@@ -117,6 +131,19 @@ class VentanaPrincipal(QMainWindow):
 
         self.setCentralWidget(self.widgetVentanaPrincipal)
 
+    def eliminarTerremotoFelipeCastro(self):
+        try:
+            InformacionTerremotos.eliminarTerremoto(self.ventanaEliminarTerremoto.txtIdTerremoto.text())
+            QMessageBox.information(self, "Informacion", "El terremoto se ha borrado exitosamente",
+                                    QMessageBox.StandardButton.Ok)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok)
+        finally:
+            self.ventanaEliminarTerremoto.limpiarVentanaEliminar()
+            self.tablaInformacion.clearContents()
+            self.tablaInformacion.setRowCount(0)
+            self.tablaInformacion.actualizarTablaInformacion()
+
     def registrarTerremotoFelipeCastro(self):
         try:
             InformacionTerremotos.registrarTerremoto(TerremotoFelipeCastro(
@@ -125,7 +152,8 @@ class VentanaPrincipal(QMainWindow):
                 self.ventanaRegistrarTerremoto.dateFechaTerremoto.text(),
                 self.ventanaRegistrarTerremoto.txtMagnitudTerremoto.text(),
                 self.ventanaRegistrarTerremoto.txtDepartamentoTerremoto.text(),
-                self.ventanaRegistrarTerremoto.txtNumeroMuertosTerremoto.text()
+                self.ventanaRegistrarTerremoto.txtNumeroMuertosTerremoto.text(),
+                self.ventanaRegistrarTerremoto.cbAyudaEstado.currentText()
             ))
         except Exception as e:
             QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok)
@@ -148,6 +176,26 @@ class VentanaPrincipal(QMainWindow):
                 for j in range(0, len(terremotos) - i - 1):
                     if terremotos[j].getMagnitud < terremotos[j + 1].getMagnitud:
                         terremotos[j], terremotos[j + 1] = terremotos[j + 1], terremotos[j]
+
+        self.ordenarTablaInformacion(terremotos)
+
+    def ordenarPorAyudaEstadoFelipeCastro(self, ascendente):
+        terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
+
+        if ascendente:
+            for i in range(len(terremotos)):
+                minPosicion = i
+                for j in range(i + 1, len(terremotos)):
+                    if terremotos[j].getAyudaEstado > terremotos[minPosicion].getAyudaEstado:
+                        minPosicion = j
+                terremotos[i], terremotos[minPosicion] = terremotos[minPosicion], terremotos[i]
+        else:
+            for i in range(len(terremotos)):
+                minPosicion = i
+                for j in range(i + 1, len(terremotos)):
+                    if terremotos[j].getAyudaEstado < terremotos[minPosicion].getAyudaEstado:
+                        minPosicion = j
+                terremotos[i], terremotos[minPosicion] = terremotos[minPosicion], terremotos[i]
 
         self.ordenarTablaInformacion(terremotos)
 
@@ -196,6 +244,10 @@ class VentanaPrincipal(QMainWindow):
             self.ordenarPorMagnitudFelipeCastro(True)
         elif self.cbOrdenamiento.currentData() == 5:
             self.ordenarPorMagnitudFelipeCastro(False)
+        elif self.cbOrdenamiento.currentData() == 6:
+            self.ordenarPorAyudaEstadoFelipeCastro(False)
+        elif self.cbOrdenamiento.currentData() == 7:
+            self.ordenarPorAyudaEstadoFelipeCastro(True)
 
     def listarTerremotosFelipeCastro(self):
         self.tablaInformacion.clearContents()
@@ -217,6 +269,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoPorId.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoPorId.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoPorId.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoPorId.getAyudaEstado)
 
     def buscarTerremotoPorNumeroDeMuertosFelipeCastro(self):
         numeroMuertos = self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.text()
@@ -233,6 +286,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoPorNumeroMuertos.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoPorNumeroMuertos.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoPorNumeroMuertos.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoPorNumeroMuertos.getAyudaEstado)
 
     def buscarTerremotoConMayorNumeroDeMuertosFelipeCastro(self):
         terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
@@ -250,6 +304,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoNumMuertosMayor.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoNumMuertosMayor.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoNumMuertosMayor.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoNumMuertosMayor.getAyudaEstado)
 
     def buscarTerremotoConMenorNumeroDeMuertosFelipeCastro(self):
         terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
@@ -267,6 +322,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoNumMuertosMenor.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoNumMuertosMenor.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoNumMuertosMenor.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoNumMuertosMenor.getAyudaEstado)
 
     def buscarTerremotoConMenorMagnitudFelipeCastro(self):
         terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
@@ -284,6 +340,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoMenorMagnitud.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoMenorMagnitud.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoMenorMagnitud.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoMenorMagnitud.getAyudaEstado)
 
     def buscarTerremotoConMayorMagnitudFelipeCastro(self):
         terremotos = InformacionTerremotos.seleccionarTodosLosTerremotosObj()
@@ -301,6 +358,7 @@ class VentanaPrincipal(QMainWindow):
         self.ventanaBuscarTerremoto.txtMagnitudTerremoto.setText(str(terremotoMayorMagnitud.getMagnitud))
         self.ventanaBuscarTerremoto.txtDepartamentoTerremoto.setText(terremotoMayorMagnitud.getDepartamento)
         self.ventanaBuscarTerremoto.txtNumeroMuertosTerremoto.setText(str(terremotoMayorMagnitud.getNumeroMuertos))
+        self.ventanaBuscarTerremoto.txtAyudaEstadoTerremoto.setText(terremotoMayorMagnitud.getAyudaEstado)
 
     def ordenarTablaInformacion(self, arreglo):
         datos = arreglo
@@ -337,11 +395,21 @@ class VentanaPrincipal(QMainWindow):
             self.tablaInformacion.item(fila, 5).setFlags(~Qt.ItemFlag.ItemIsEditable)
             self.tablaInformacion.item(fila, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
+            self.tablaInformacion.setItem(fila, 6, QTableWidgetItem(terremoto.getAyudaEstado))
+            self.tablaInformacion.item(fila, 6).setFlags(~Qt.ItemFlag.ItemIsEditable)
+            self.tablaInformacion.item(fila, 6).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+
     def abrirVentanaRegistro(self):
         if self.ventanaRegistrarTerremoto.isVisible():
             self.ventanaRegistrarTerremoto.close()
         else:
             self.ventanaRegistrarTerremoto.show()
+
+    def abrirVentanaEliminar(self):
+        if self.ventanaEliminarTerremoto.isVisible():
+            self.ventanaEliminarTerremoto.close()
+        else:
+            self.ventanaEliminarTerremoto.show()
 
     def abrirVentanaBuscar(self):
         if self.ventanaBuscarTerremoto.isVisible():

@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, QDate
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QWidget, QFormLayout, QVBoxLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, \
-    QDateEdit
+    QDateEdit, QComboBox
 
 
 class VentanaRegistro(QWidget):
@@ -10,7 +10,7 @@ class VentanaRegistro(QWidget):
 
         # Agregamos algunas configuraciones a la ventana
         self.setWindowTitle("Registrar Terremoto")
-        self.setFixedSize(600, 240)
+        self.setFixedSize(600, 260)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
         layoutPrincipal = QHBoxLayout()
@@ -40,6 +40,11 @@ class VentanaRegistro(QWidget):
         self.txtNumeroMuertosTerremoto = QLineEdit()
         self.txtNumeroMuertosTerremoto.setFixedHeight(30)
         layoutFormulario.addRow(QLabel("No.Muertos Aproximados"), self.txtNumeroMuertosTerremoto)
+
+        self.cbAyudaEstado = QComboBox()
+        self.cbAyudaEstado.addItems(["Bueno", "Regular", "Malo"])
+        self.cbAyudaEstado.setFixedHeight(30)
+        layoutFormulario.addRow(QLabel("Ayuda Estado"), self.cbAyudaEstado)
 
         frameFunciones = QGroupBox("Funciones")
         layoutFunciones = QVBoxLayout()
