@@ -25,15 +25,15 @@ class Carrera:
             if (autoElectrico.comprobarBateria(tempAceleracionAutoElectrico) and
                     autoGasolina.comprobarGasolina(tempAceleracionAutoGasolina)):
 
-                if autoElectrico.velocidad == autoElectrico.velocidadMaxima:
+                if ((autoElectrico.velocidad / autoElectrico.velocidadMaxima) * 100 ==
+                        (autoGasolina.velocidad / autoGasolina.velocidadMaxima) * 100):
+                    print("Se genero un empate en la carrera de los dos autos")
+                    break
+                elif autoElectrico.velocidad == autoElectrico.velocidadMaxima:
                     print(f"El auto con el modelo: {autoElectrico.modelo} llego a la meta de primeras.")
                     break
                 elif autoGasolina.velocidad == autoGasolina.velocidadMaxima:
                     print(f"El auto con el modelo: {autoGasolina.modelo} llego a la meta de primeras.")
-                    break
-                elif ((autoElectrico.velocidad/autoElectrico.velocidadMaxima) * 100 ==
-                      (autoGasolina.velocidad/autoGasolina.velocidadMaxima) * 100):
-                    print("Se genero un empate en la carrera de los dos autos")
                     break
             else:
                 if autoElectrico.velocidad > autoGasolina.velocidad:
