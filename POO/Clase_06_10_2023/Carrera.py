@@ -17,8 +17,8 @@ class Carrera:
         print("Los autos se encendieron y arrancaron")
 
         while True:
-            tempAceleracionAutoElectrico = random.randint(0, autoElectrico.capacidadBateria)
-            tempAceleracionAutoGasolina = random.randint(0, autoGasolina.cantidadCombustible)
+            tempAceleracionAutoElectrico = random.randint(0, autoElectrico.velocidadMaxima)
+            tempAceleracionAutoGasolina = random.randint(0, autoGasolina.velocidadMaxima)
             autoElectrico.acelerar(tempAceleracionAutoElectrico)
             autoGasolina.acelerar(tempAceleracionAutoGasolina)
 
