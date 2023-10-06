@@ -2,13 +2,18 @@ from abc import ABC, abstractmethod
 
 
 class Auto(ABC):
-    def __init__(self, modelo, marca, velocidadMaxima, tipoMotor):
+    def __init__(self, modelo, marca, velocidadMaxima, tipoMotor, consumo):
         self.__modelo = modelo
         self.__marca = marca
         self.__velocidadMaxima = velocidadMaxima
         self.__tipoMotor = tipoMotor
         self.__estado = False
         self.__velocidad = 0
+        self.__consumo = consumo
+
+    @property
+    def consumo(self):
+        return self.__consumo
 
     @property
     def modelo(self):
@@ -30,6 +35,10 @@ class Auto(ABC):
     def estado(self):
         return self.__estado
 
+    @estado.setter
+    def estado(self, valor):
+        self.__estado = valor
+
     @property
     def velocidad(self):
         return self.__velocidad
@@ -40,6 +49,10 @@ class Auto(ABC):
 
     @abstractmethod
     def acelerar(self, cantidad: int):
+        pass
+
+    @abstractmethod
+    def informacionCombustible(self):
         pass
 
     def encender(self):
@@ -62,12 +75,10 @@ class Auto(ABC):
             if opcion.lower() == "y":
                 self.velocidad = 0
             elif opcion.lower() == "n":
-                print("La velocidad del auto se mantiene")
+                print(f"La velocidad del auto se mantiene en: {self.velocidad} km/h")
             else:
                 print("Debe ingresar una opcion valida")
                 self.apagar()
-
-
 
     def __str__(self):
         pass
