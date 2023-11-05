@@ -7,7 +7,7 @@ from BaseDeDatos.Estudiantes import EstudianteDB
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Definir la dirección y el puerto en el que el servidor escuchará
-server_address = ('192.168.100.12', 12345)  # Cambia 'localhost' por la dirección IP del servidor si es necesario
+server_address = ('10.13.128.231', 12345)  # Cambia 'localhost' por la dirección IP del servidor si es necesario
 server_socket.bind(server_address)
 
 # Escuchar conexiones entrantes

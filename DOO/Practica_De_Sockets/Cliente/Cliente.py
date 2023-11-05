@@ -6,7 +6,7 @@ from datetime import datetime
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Definir la dirección y el puerto del servidor al que se conectará el cliente
-server_address = ('192.168.100.12', 12345)  # Cambia 'localhost' por la dirección IP del servidor si es necesario
+server_address = ('10.13.128.231', 12345)  # Cambia 'localhost' por la dirección IP del servidor si es necesario
 
 
 def calcularEdad(fechaNacimiento):
