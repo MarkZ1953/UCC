@@ -1,4 +1,4 @@
-/*
+package Entidades;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -9,11 +9,11 @@
  */
 public class Curso {
     
-    Curso ant;
-    int codigo;
-    String asignatura;
-    double nota;
-    Curso sig;
+    public Curso ant;
+    private int codigo;
+    private String asignatura;
+    private double nota;
+    public Curso sig;
     
     public Curso(int cod,String asig,double not)
     {

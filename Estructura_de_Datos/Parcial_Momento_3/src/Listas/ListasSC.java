@@ -1,22 +1,26 @@
+package Listas;
+
+import Entidades.Artista;
+import Entidades.Curso;
+import Entidades.PaginasAmarillas;
+import Entidades.PerrosCalientes;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Scanner;
 
 
-public class LISTAS {
+public class ListasSC {
 
-    Scanner leer = new Scanner(System.in);
-    Artista cabezaArtista, puntero, nodoNuevoArtista;
-    PerrosCalientes cabezaPerrosCalientes,r,s;
-    PaginasAmarillas cabezaPaginasAmarillas,t,u;
-    Curso cabezaCurso,x,y;
+    public Scanner leer = new Scanner(System.in);
+    public Artista cabezaArtista, punteroArtista, nodoNuevoArtista;
+    public PerrosCalientes cabezaPerrosCalientes, nodoNuevoPerrosCalientes, punteroPerrosCalientes;
+    public PaginasAmarillas cabezaPaginasAmarillas,t,u;
+    public Curso cabezaCurso,x,y;
+
     int opc;
-    File archivo = new File("C:\\Users\\FelipeCastro\\Documents\\GitHub\\UCC\\Estructura_de_Datos\\Parcial_Momento_3\\src\\Archivo.txt");
-    public LISTAS()
-    {
-        menuPrincipal();
-    }
+    public File archivo = new File("C:\\Users\\FelipeCastro\\Documents\\GitHub\\UCC\\Estructura_de_Datos\\Parcial_Momento_3\\src\\Informacion\\Archivo.txt");
 
     private static class NodoArtista {
         public Artista artista;
@@ -41,247 +45,57 @@ public class LISTAS {
 
         return new Artista(nombre, nacionalidad, fechaNacimiento);
     }
-   
-    public void menuPrincipal()
-    {
-        int opcion;
-        System.out.println("MENU PRINCIPAL");
-        System.out.println("1. Listas simples");
-        System.out.println("2. Listas circulares");
-        System.out.println("3. Listas dobles");
-        System.out.println("4. Listas circulares dobles");
-        System.out.println("5. Terminar");
-        
-        System.out.println("");
-        System.out.println("Escoja la opcion:");
-        opcion = leer.nextInt();
-        
-        switch (opcion) {
-            case 1:
-                menuListasSimples();
-                menuPrincipal();
-                break;
-                
-            case 2:
-                menuListasCirculares();
-                menuPrincipal();
-                break;
-                
-            case 3:
-                menuListasDobles();
-                menuPrincipal();
-                break;
-                
-            case 4:
-                menuListasCircularesDobles();
-                menuPrincipal();
-                break;
-                
-            case 5:
-                System.exit(0);
-                break;
-                
-            default:
-                menuPrincipal();
-        }
-    }
-    
-    public void menuListasSimples()
-    {
-        int opc;
-        System.out.println("MENU LISTAS SIMPLES");
-        System.out.println("1. Crear listas simples");
-        System.out.println("2. Adicionar listas simples.");
-        System.out.println("3. Eliminar listas simples");
-        System.out.println("4. Modificar listas simples");
-        System.out.println("5. Imprimir listas simples");
-        System.out.println("6. Imprimir artistas de forma impar.");
-        System.out.println("7. Volver.");
-        
-        System.out.println();
-        System.out.println("Escoja una opcion");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                cargarArtistasListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 2:
-                menuAdicionarListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 3:
-                menuEliminarListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 4:
-                modificarListasSimples();
-                menuListasSimples();
-                break;
-            
-            case 5:
-                imprimirListasSimples();
-                menuListasSimples();
-                break;
-
-            case 6:
-                imprimirNodosImparesArtista();
-                menuPrincipal();
-                break;
-
-            case 7:
-                menuPrincipal();
-                break;
-                
-            default:
-                menuListasSimples();
-        }
-    }
     
     public void crearListasSimples()
     {
         nodoNuevoArtista = new Artista("Luis","peruano","12/08/1994");
         cabezaArtista = nodoNuevoArtista;
-        puntero = nodoNuevoArtista;
+        punteroArtista = nodoNuevoArtista;
 
         nodoNuevoArtista = new Artista("Elsa","japonesa","21/10/1980");
-        puntero.siguiente = nodoNuevoArtista;
-        puntero = nodoNuevoArtista;
+        punteroArtista.siguiente = nodoNuevoArtista;
+        punteroArtista = nodoNuevoArtista;
 
         nodoNuevoArtista = new Artista("Gabriel","aleman","13/01/1910");
-        puntero.siguiente = nodoNuevoArtista;
-        puntero = nodoNuevoArtista;
+        punteroArtista.siguiente = nodoNuevoArtista;
+        punteroArtista = nodoNuevoArtista;
 
         nodoNuevoArtista = new Artista("Estela","india","21/12/1991");
-        puntero.siguiente = nodoNuevoArtista;
-        puntero = nodoNuevoArtista;
-    }
-    
-    public void menuAdicionarListasSimples()
-    {
-        int opc;
-        System.out.println("MENU ADICIONAR LISTAS SIMPLES");
-        System.out.println("1. Adicionar por el inicio listas simples.");
-        System.out.println("2. Adicionar por el fin listas simples.");
-        System.out.println("3. Adicionar antes de nodo listas simples");
-        System.out.println("4. Adicionar despues de nodo listas simples");
-        System.out.println("5. Volver.");
-        
-        System.out.println("\nEscoja una opcion;");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                adicionarInicioListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 2:
-                adicionarFinListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 3:
-                adicionarAntesListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 4:
-                adicionarDespuesListasSimples();
-                menuAdicionarListasSimples();
-                break;
-            
-            case 5:
-                menuListasSimples();
-                break;
-                
-            default:
-                menuAdicionarListasSimples();
-                break;
-        }
-    }
-    
-    public void adicionarInicioListasSimples()
-    {
-        nodoNuevoArtista = recolectarInformacionArtista();
-        nodoNuevoArtista.siguiente = cabezaArtista;
-        cabezaArtista = nodoNuevoArtista;
+        punteroArtista.siguiente = nodoNuevoArtista;
+        punteroArtista = nodoNuevoArtista;
     }
     
     public void adicionarFinListasSimples()
     {
         nodoNuevoArtista = recolectarInformacionArtista();
-        puntero = cabezaArtista;
+        punteroArtista = cabezaArtista;
 
-        while(puntero.siguiente != null) {
-            puntero = puntero.siguiente;
-            puntero.siguiente = nodoNuevoArtista;
+        while(punteroArtista.siguiente != null) {
+            punteroArtista = punteroArtista.siguiente;
+            punteroArtista.siguiente = nodoNuevoArtista;
         }
-    }
-    
-    public void adicionarAntesListasSimples()
-    {
-        Artista nodoAnteriorArtista;
-        String nombreABuscar;
-
-        puntero = cabezaArtista;
-        System.out.println("Digite el nombre a buscar: ");
-        nombreABuscar = leer.next();
-
-        if(cabezaArtista.getNombre().compareToIgnoreCase(nombreABuscar)==0)
-        {
-            adicionarInicioListasSimples();
-        }
-        else
-        {
-            // Se pone cabezaArtista.siguiente porque ya se verifico que el valor que se estaba buscando no era el
-            // primero
-            nodoNuevoArtista = recolectarInformacionArtista();
-            puntero = cabezaArtista.siguiente; // Se quiere iniciar desde el segundo nodo de la lista
-            nodoAnteriorArtista = cabezaArtista;
-
-            // Se itera toda la lista, y cuando se encuentre el valor que se solicito, entonces el nodoAnteriorArtista
-            // se queda con el nodoActualArtista
-            while(puntero.getNombre().compareToIgnoreCase(nombreABuscar)!=0 && puntero.siguiente !=null)
-            {
-                nodoAnteriorArtista = puntero;
-                puntero = puntero.siguiente;
-            }
-
-            if(puntero.getNombre().compareToIgnoreCase(nombreABuscar)==0)
-            {
-                nodoNuevoArtista.siguiente = puntero;
-                nodoAnteriorArtista.siguiente = nodoNuevoArtista;
-            }
-            else
-                System.out.println("El nombre buscado no se encuentra en la lista");
-        }
-                
     }
 
     public void imprimirNodosImparesArtista() {
         int contador = 1;
-        puntero = cabezaArtista;
+        punteroArtista = cabezaArtista;
 
         while (true)
         {
+            System.out.println();
             System.out.println("Id: " + contador);
-            System.out.println("Nombre: "+ puntero.nombre);
-            System.out.println("Nacionalidad: "+ puntero.nacionalidad);
-            System.out.println("Fecha: "+ puntero.fechaNacimiento);
-            System.out.println("Direccion de memoria del Nodo: "+ puntero);
+            System.out.println(punteroArtista.toString());
+            System.out.println("Direccion de memoria del Nodo: "+ punteroArtista);
 
-            if (puntero.siguiente != null) {
-                puntero = puntero.siguiente.siguiente;
+            if (punteroArtista.siguiente != null) {
+                punteroArtista = punteroArtista.siguiente.siguiente;
                 contador = contador + 2;
             } else {
                 break;
             }
         }
+
+        System.out.println();
     }
 
     public void cargarArtistasListasSimples()
@@ -313,11 +127,11 @@ public class LISTAS {
 
                 if (contadorListas == 1) {
                     cabezaArtista = nodoNuevoArtista;
-                    puntero = nodoNuevoArtista;
+                    punteroArtista = nodoNuevoArtista;
                     contadorListas = 2;
                 } else {
-                    puntero.siguiente = nodoNuevoArtista;
-                    puntero = nodoNuevoArtista;
+                    punteroArtista.siguiente = nodoNuevoArtista;
+                    punteroArtista = nodoNuevoArtista;
                 }
 
             }
@@ -328,151 +142,72 @@ public class LISTAS {
         }
         catch(Exception e)
         {
-            System.out.println("error al leer informacion del archivo");
-        }
-    }
-
-
-    public void adicionarDespuesListasSimples()
-    {
-        Artista m;
-        String nombre, nacionalidad, fechaNacimiento, nombreABuscar;
-
-        System.out.println("Ingrese el nombre a buscar: ");
-        nombreABuscar = leer.next();
-
-        // 1. Despues de quien tenemos que agregar?
-        // 2. A quien tenemos que agregar?
-
-        puntero = cabezaArtista;
-
-        if(puntero.getNombre().compareToIgnoreCase(nombreABuscar)==0)
-        {
-            adicionarInicioListasSimples();
-        }
-        else
-        {
-            System.out.println("Digite el nombre del artista ");
-            nombre=leer.next();
-            System.out.println("Digite la nacionalidad del artista ");
-            nacionalidad=leer.next();
-            System.out.println("Digite fecha nacimiento del artista ");
-            fechaNacimiento=leer.next();
-
-            nodoNuevoArtista =new Artista(nombre,nacionalidad,fechaNacimiento);
-
-            puntero = cabezaArtista.siguiente;
-            m= cabezaArtista;
-
-            while(puntero.getNombre().compareToIgnoreCase(nombreABuscar)!=0 && puntero.siguiente !=null)
-            {
-                m= puntero;
-                puntero = puntero.siguiente;
-            }
-
-            if(puntero.getNombre().compareToIgnoreCase(nombreABuscar)==0)
-            {
-                nodoNuevoArtista.siguiente = puntero;
-                m.siguiente = nodoNuevoArtista;
-            }
-            else
-                System.out.println("El nombre buscado no se encuentra en la lista");
-        }
-
-    }
-    
-    public void menuEliminarListasSimples()
-    {
-        int opc;
-        System.out.println("MENU ELIMINAR LISTAS SIMPLES");
-        System.out.println("1. Eliminar por el inicio listas simples.");
-        System.out.println("2. Eliminar por el fin listas simples.");
-        System.out.println("3. Eliminar antes de nodo listas simples");
-        System.out.println("4. Eliminar despues de nodo listas simples");
-        System.out.println("5. Eliminar nodo dado listas simples.");
-        System.out.println("6. Volver.");
-        
-        System.out.println("\nEscoja una opcion;");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                eliminarInicioListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 2:
-                eliminarFinListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 3:
-                eliminarAntesListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 4:
-                eliminarDespuesListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 5:
-                eliminarNodoDadoListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 6:
-                menuListasSimples();
-                break;
-                
-            default:
-                menuEliminarListasSimples();
-                break;
+            System.out.println("Error al leer informacion del archivo");
         }
     }
     
     public void eliminarInicioListasSimples()
     {
+        // Preguntamos si hay valores que se puedan eliminar
+        if (cabezaArtista != null) {
+            // Creamos un nodo temporal que no almacene el resto de la cola
+            Artista nodoTemporal;
 
+            // Hacemos que el puntero inicie desde la cabeza
+            punteroArtista = cabezaArtista;
+
+            // Hacemos que el nodo temporal se quede con el siguiente del puntero
+            nodoTemporal = punteroArtista.siguiente;
+
+            // Hacemos que la cabeza ahora sea el nodo temporal o lo que seguia despues del primer nodo
+            cabezaArtista = nodoTemporal;
+
+            // Eliminamos el nodo temporal
+            nodoTemporal = null;
+
+            System.out.println("Se ha eliminado correctamente");
+        } else {
+            System.out.println("No hay elementos que se puedan eliminar");
+        }
     }
     
     public void eliminarFinListasSimples()
     {
-        
-    }
-    
-    public void eliminarAntesListasSimples()
-    {
-        
+        // Pregunta si hay por lo menos dos elementos, sino hay se elimina la cabeza
+        if (cabezaArtista.siguiente == null) {
+            cabezaArtista = null;
+        } else {
+            // Hacemos que el puntero inicie desde la cabeza
+            punteroArtista = cabezaArtista;
+
+            // Recorremos la lista para hallar el ultimo valor, preguntando si el siguiente del ultimo valor es
+            // diferente de null
+            while (punteroArtista.siguiente.siguiente != null) {
+                punteroArtista = punteroArtista.siguiente;
+            }
+
+            // Eliminamos el ultimo nodo de la lista
+            punteroArtista.siguiente = null;
+        }
     }
 
-    public void eliminarDespuesListasSimples()
-    {
+    public boolean verificarExistenciaNodoListasSimples(String nombre) {
+        boolean nodoEncontrado = false;
         
-    }
-    
-    public void eliminarNodoDadoListasSimples()
-    {
-        
+        punteroArtista = cabezaArtista;
+
+        while (punteroArtista != null) {
+            punteroArtista = punteroArtista.siguiente;
+            nodoEncontrado = true;
+            break;
+        }
+
+        return nodoEncontrado;
     }
     
     public void modificarListasSimples()
     {
         
-    }
-    
-    public void imprimirListasSimples()
-    {
-        puntero = cabezaArtista;
-
-        while (puntero != null)
-        {
-            System.out.println("nombre : "+ puntero.nombre);
-            System.out.println("nacionalidad : "+ puntero.nacionalidad);
-            System.out.println("fecha : "+ puntero.fechaNacimiento);
-            System.out.println("p : "+ puntero);
-            puntero = puntero.siguiente;
-        }
     }
     
     public void menuListasCirculares()
@@ -519,7 +254,7 @@ public class LISTAS {
                 break;
                 
             case 6:
-                menuPrincipal();
+//                menuPrincipal();
                 break;
                 
             default:
@@ -529,15 +264,15 @@ public class LISTAS {
     
     public void crearListasCirculares(){
         cabezaPerrosCalientes = new PerrosCalientes("juan delgadillo", "peruano", 78.3, 3.2,16, "adulto");
-        cabezaPerrosCalientes.sig = cabezaPerrosCalientes;
-        r = new PerrosCalientes("luang xion", "chino", 65.4, 4.6,23, "junior");
-        s = cabezaPerrosCalientes;
-        s.sig = r;
-        r.sig = cabezaPerrosCalientes;
-        s = r;
-        r = new PerrosCalientes("robert conti", "italiano",67.8 ,3.6 ,18, "junior");
-        s.sig = r;
-        r.sig = cabezaPerrosCalientes;
+        cabezaPerrosCalientes.siguiente = cabezaPerrosCalientes;
+        nodoNuevoPerrosCalientes = new PerrosCalientes("luang xion", "chino", 65.4, 4.6,23, "junior");
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
+        nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
+        punteroPerrosCalientes = nodoNuevoPerrosCalientes;
+        nodoNuevoPerrosCalientes = new PerrosCalientes("robert conti", "italiano",67.8 ,3.6 ,18, "junior");
+        punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
+        nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
     
     }
     public void menuAdicionarListasCirculares(){
@@ -593,22 +328,22 @@ public class LISTAS {
     public void adicionarInicioListasCirculares()
     {
         
-        s = cabezaPerrosCalientes;
-        r = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
-         while(s.sig!= cabezaPerrosCalientes)
-                s=s.sig;
-         r.sig= cabezaPerrosCalientes;
-         s.sig=r;
-         cabezaPerrosCalientes =r;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        nodoNuevoPerrosCalientes = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
+         while(punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
+                punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+         nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
+         punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
+         cabezaPerrosCalientes = nodoNuevoPerrosCalientes;
     }
     public void adicionarFinListasCirculares()
     {
-        s = cabezaPerrosCalientes;
-        r = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
-         while(s.sig!= cabezaPerrosCalientes)
-                s=s.sig;
-         r.sig= cabezaPerrosCalientes;
-         s.sig=r;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        nodoNuevoPerrosCalientes = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
+         while(punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
+                punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+         nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
+         punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
     }
     
     public void adicionarAntesListasCirculares()
@@ -619,30 +354,30 @@ public class LISTAS {
         valor = leer.nextLine();
         valor = leer.nextLine();
         
-        s = cabezaPerrosCalientes;
-        r = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        nodoNuevoPerrosCalientes = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
         
-        if(s.getNombre().compareToIgnoreCase(valor)==0 )
+        if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 )
         {
-            r.sig= cabezaPerrosCalientes;
-            while(s.sig!= cabezaPerrosCalientes)
-                s=s.sig;
-            s.sig=r;
-            cabezaPerrosCalientes =r;
+            nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
+            while(punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
+                punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+            punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
+            cabezaPerrosCalientes = nodoNuevoPerrosCalientes;
         }
         else
         {
-            s=s.sig;
+            punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
             opc= cabezaPerrosCalientes;
-            while (s.getNombre().compareToIgnoreCase(valor)!=0 && s.sig!= cabezaPerrosCalientes)
+            while (punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)!=0 && punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
             {
-                opc=s;
-                s = s.sig;
+                opc= punteroPerrosCalientes;
+                punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
             }
-            if(s.getNombre().compareToIgnoreCase(valor)==0 )
+            if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 )
             {
-             r.sig = s;
-            opc.sig = r;
+             nodoNuevoPerrosCalientes.siguiente = punteroPerrosCalientes;
+            opc.siguiente = nodoNuevoPerrosCalientes;
             }
             else{
                 System.out.println("El participante no se encuentra en la lista");
@@ -656,22 +391,22 @@ public class LISTAS {
         valor = leer.nextLine();
         valor = leer.nextLine();
         
-        s = cabezaPerrosCalientes;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
         
-        while (s.getNombre().compareToIgnoreCase(valor)!=0 && s.sig!= cabezaPerrosCalientes){
-            s = s.sig;
+        while (punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)!=0 && punteroPerrosCalientes.siguiente != cabezaPerrosCalientes){
+            punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
         }
         
-        if(s.getNombre().compareToIgnoreCase(valor)==0 && s.sig== cabezaPerrosCalientes){
-            r = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
-            s.sig = r;
-            r.sig = cabezaPerrosCalientes;
+        if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 && punteroPerrosCalientes.siguiente == cabezaPerrosCalientes){
+            nodoNuevoPerrosCalientes = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
+            punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
+            nodoNuevoPerrosCalientes.siguiente = cabezaPerrosCalientes;
              
         }else {
-            if(s.getNombre().compareToIgnoreCase(valor)==0 && s.sig != cabezaPerrosCalientes){
-            r = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
-            r.sig = s.sig;
-            s.sig = r;
+            if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 && punteroPerrosCalientes.siguiente != cabezaPerrosCalientes){
+            nodoNuevoPerrosCalientes = new PerrosCalientes("sofia reina", "mexicana",63.0 ,5.2 ,31, "infantil");
+            nodoNuevoPerrosCalientes.siguiente = punteroPerrosCalientes.siguiente;
+            punteroPerrosCalientes.siguiente = nodoNuevoPerrosCalientes;
             
             }else{
                 System.out.println("El participante no se encuentra en la lista");
@@ -733,19 +468,19 @@ public class LISTAS {
     
      public void eliminarInicioListasCirculares()
     {
-        s = cabezaPerrosCalientes;
-        while (s.sig != cabezaPerrosCalientes)
-            s = s.sig;
-        s.sig = cabezaPerrosCalientes.sig;
-        cabezaPerrosCalientes = cabezaPerrosCalientes.sig;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        while (punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
+            punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+        punteroPerrosCalientes.siguiente = cabezaPerrosCalientes.siguiente;
+        cabezaPerrosCalientes = cabezaPerrosCalientes.siguiente;
     }
     
     public void eliminarFinListasCirculares()
     {
-        s = cabezaPerrosCalientes;
-        while (s.sig.sig != cabezaPerrosCalientes)
-            s = s.sig;
-        s.sig = cabezaPerrosCalientes;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        while (punteroPerrosCalientes.siguiente.siguiente != cabezaPerrosCalientes)
+            punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+        punteroPerrosCalientes.siguiente = cabezaPerrosCalientes;
     }
     
     public void eliminarAntesListasCirculares()
@@ -754,14 +489,14 @@ public class LISTAS {
         System.out.println("Digite el dato a eliminar");
         dato = leer.nextLine();
         dato = leer.nextLine();
-        s = cabezaPerrosCalientes;
-        if(dato.compareToIgnoreCase(s.getNombre() )== 0)
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        if(dato.compareToIgnoreCase(punteroPerrosCalientes.getNombre() )== 0)
             
             System.out.println("NO EXISTE NODO ANTES PARA ELIMINAR");
                 
         else {
-         s = s.sig;
-         if(dato.compareToIgnoreCase(s.getNombre() )== 0){
+         punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+         if(dato.compareToIgnoreCase(punteroPerrosCalientes.getNombre() )== 0){
          
           eliminarInicioListasCirculares();
           
@@ -769,17 +504,17 @@ public class LISTAS {
          else{
              
              PerrosCalientes opc = cabezaPerrosCalientes;
-               s = s.sig;
+               punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
                
-              while (dato.compareToIgnoreCase(s.getNombre() ) != 0 && s.sig != cabezaPerrosCalientes)
+              while (dato.compareToIgnoreCase(punteroPerrosCalientes.getNombre() ) != 0 && punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
               {
-                s = s.sig;
-                opc = opc.sig;
+                punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+                opc = opc.siguiente;
               }
               
-              if (dato.compareToIgnoreCase(s.getNombre()) ==0)
+              if (dato.compareToIgnoreCase(punteroPerrosCalientes.getNombre()) ==0)
                   
-                  opc.sig = s;
+                  opc.siguiente = punteroPerrosCalientes;
               else{
               
                   System.out.println("EL DATO NO EXISTE");
@@ -795,17 +530,17 @@ public class LISTAS {
         System.out.println("digite el nombre a buscar");
         valor = leer.nextLine();
         valor = leer.nextLine();
-        s= cabezaPerrosCalientes;
-        while (s.getNombre().compareToIgnoreCase(valor)!=0 && s.getSig()!= cabezaPerrosCalientes)
-            s= s.sig;
-        if(s.getNombre().compareToIgnoreCase(valor)==0 && s.sig.sig == cabezaPerrosCalientes)
-            s.sig= cabezaPerrosCalientes;
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+        while (punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)!=0 && punteroPerrosCalientes.getSiguiente()!= cabezaPerrosCalientes)
+            punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+        if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 && punteroPerrosCalientes.siguiente.siguiente == cabezaPerrosCalientes)
+            punteroPerrosCalientes.siguiente = cabezaPerrosCalientes;
         else
-            if(s.getNombre().compareToIgnoreCase(valor)==0 && s.sig== cabezaPerrosCalientes)
+            if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 && punteroPerrosCalientes.siguiente == cabezaPerrosCalientes)
                eliminarInicioListasCirculares();
            else
-                if(s.getNombre().compareToIgnoreCase(valor)==0)
-                    s.sig=s.sig.sig;
+                if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0)
+                    punteroPerrosCalientes.siguiente = punteroPerrosCalientes.siguiente.siguiente;
                 else
                     System.out.println("el valor no existe");
         
@@ -818,21 +553,21 @@ public class LISTAS {
         System.out.println("digite el nombre a eliminar");
         valor = leer.nextLine();
         valor = leer.nextLine();
-        s= cabezaPerrosCalientes;
-                while (s.getNombre().compareToIgnoreCase(valor)!=0 && s.sig != cabezaPerrosCalientes)
-                    s= s.sig;
-                if(s.getNombre().compareToIgnoreCase(cabezaPerrosCalientes.getNombre())==0)
+        punteroPerrosCalientes = cabezaPerrosCalientes;
+                while (punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)!=0 && punteroPerrosCalientes.siguiente != cabezaPerrosCalientes)
+                    punteroPerrosCalientes = punteroPerrosCalientes.siguiente;
+                if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(cabezaPerrosCalientes.getNombre())==0)
                     eliminarInicioListasCirculares();
                 else
-                    if(s.getNombre().compareToIgnoreCase(valor)==0 && s.sig== cabezaPerrosCalientes)
+                    if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0 && punteroPerrosCalientes.siguiente == cabezaPerrosCalientes)
                         eliminarFinListasCirculares();
                 else
-                        if(s.getNombre().compareToIgnoreCase(valor)==0)
+                        if(punteroPerrosCalientes.getNombre().compareToIgnoreCase(valor)==0)
                         {
                           t= cabezaPerrosCalientes;
-                          while(t.sig.getNombre().compareToIgnoreCase(valor)!=0)
-                              t= t.sig;
-                          t.sig=s.sig;
+                          while(t.siguiente.getNombre().compareToIgnoreCase(valor)!=0)
+                              t= t.siguiente;
+                          t.siguiente = punteroPerrosCalientes.siguiente;
                           
                         }
                 else
@@ -847,30 +582,18 @@ public class LISTAS {
    
    
     public void imprimirListasCirculares(){
-         r= cabezaPerrosCalientes;
-        while (r.sig!= cabezaPerrosCalientes)
+        nodoNuevoPerrosCalientes = cabezaPerrosCalientes;
+
+        while (nodoNuevoPerrosCalientes.siguiente != cabezaPerrosCalientes)
         {
-            System.out.println("nombre : "+ r.nombre);
-            System.out.println("nacionalidad : "+ r.nacionalidad);
-            System.out.println("peso : "+ r.peso);
-            System.out.println("velocidad de ingestion : "+ r.velocidadIngestion);
-            System.out.println("perros consumidos : "+ r.perrosConsumidos);
-            System.out.println("categoria : "+ r.categoria);
-            r=r.sig;
+            System.out.println(nodoNuevoPerrosCalientes.toString());
+            nodoNuevoPerrosCalientes = nodoNuevoPerrosCalientes.siguiente;
         }
-        
-            System.out.println("nombre : "+ r.nombre);
-            System.out.println("nacionalidad : "+ r.nacionalidad);
-            System.out.println("peso : "+ r.peso);
-            System.out.println("velocidad de ingestion : "+ r.velocidadIngestion);
-            System.out.println("perros consumidos : "+ r.perrosConsumidos);
-            System.out.println("categoria : "+ r.categoria);
-            r=r.sig;
+
+        System.out.println(nodoNuevoPerrosCalientes.toString());
+        nodoNuevoPerrosCalientes = nodoNuevoPerrosCalientes.siguiente;
     }
-    
-   
-    
-    
+
     
      public void menuListasDobles()
     {
@@ -914,7 +637,7 @@ public class LISTAS {
                 break;
                 
             case 6:
-                menuPrincipal();
+//                menuPrincipal();
                 break;
                 
             default:
@@ -1067,7 +790,7 @@ public class LISTAS {
     {
         
     }
-    
+
     public void menuEliminarListasDobles()
     {
         int opc;
@@ -1078,40 +801,40 @@ public class LISTAS {
         System.out.println("4. Eliminar despues de nodo listas Dobles");
         System.out.println("5. Eliminar nodo dado listas Dobles.");
         System.out.println("6. Volver.");
-        
+
         System.out.println("\nEscoja una opcion;");
         opc = leer.nextInt();
-        
+
         switch (opc) {
             case 1:
                 eliminarInicioListasDobles();
                 menuEliminarListasDobles();
                 break;
-                
+
             case 2:
                 eliminarFinListasDobles();
                 menuEliminarListasDobles();
                 break;
-                
+
             case 3:
                 eliminarAntesListasDobles();
                 menuEliminarListasDobles();
                 break;
-                
+
             case 4:
                 eliminarDespuesListasDobles();
                 menuEliminarListasDobles();
                 break;
-                
+
             case 5:
                 eliminarNodoDadoListasDobles();
                 menuEliminarListasDobles();
                 break;
-                
+
             case 6:
                 menuListasDobles();
                 break;
-                
+
             default:
                 menuEliminarListasDobles();
                 break;
@@ -1216,23 +939,23 @@ public class LISTAS {
         while (t.sig!=null)
         {
             
-            System.out.println("nombre : "+ t.nombre + "   " + "direccion : "+ t.getDireccion()+ "    " + "telefono : "+ t.getTelefono());
+            System.out.println(t);
      
             t=t.sig;
           
         }
-        System.out.println("nombre : "+ t.nombre + "   " + "direccion : "+ t.getDireccion()+ "    " + "telefono : "+ t.getTelefono());
+        System.out.println(t);
         System.out.println(" ");
         System.out.println("lista inversa ");
         System.out.println(" ");
            
              while (t.ant!=null)
              {
-               System.out.println("nombre : "+ t.nombre + "   " + "direccion : "+ t.getDireccion()+ "    " + "telefono : "+ t.getTelefono());    
+               System.out.println(t);
                 t=t.ant;
            
              }
-           System.out.println("nombre : "+ t.nombre + "   " + "direccion : "+ t.getDireccion()+ "    " + "telefono : "+ t.getTelefono()); 
+           System.out.println(t);
     }
     
     public void menuListasCircularesDobles()
@@ -1277,7 +1000,7 @@ public class LISTAS {
                 break;
                 
             case 6:
-                menuPrincipal();
+//                menuPrincipal();
                 break;
                 
             default:
@@ -1754,219 +1477,18 @@ public class LISTAS {
         while (x.sig!= cabezaCurso)
         {
             
-            System.out.println("codigo : "+ x.codigo + "   " + "asignatura : "+ x.asignatura + "    " + "nota : "+ x.nota);
+            System.out.println(x);
      
             x=x.sig;
           
         }
-         System.out.println("codigo : "+ x.codigo + "   " + "asignatura : "+ x.asignatura + "    " + "nota : "+ x.nota); 
+         System.out.println(x); 
     }
     
     
     public static void main(String[] args) 
     {
-        LISTAS obj = new LISTAS ();
+        ListasSC obj = new ListasSC();
     }  
-    
-    /*
-    public void menuListasSimples()
-    {
-        int opc;
-        System.out.println("MENU LISTAS SIMPLES");
-        System.out.println("1. Crear listas simples");
-        System.out.println("2. Adicionar listas simples.");
-        System.out.println("3. Eliminar listas simples");
-        System.out.println("4. Modificar listas simples");
-        System.out.println("5. Imprimir listas simples");
-        System.out.println("6. Volver.");
-        
-        System.out.println("");
-        System.out.println("Escoga una opcion");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                crearListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 2:
-                menuAdicionarListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 3:
-                menuEliminarListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 4:
-                modificarListasSimples();
-                menuListasSimples();
-                break;
-            
-            case 5:
-                imprimirListasSimples();
-                menuListasSimples();
-                break;
-                
-            case 6:
-                menuPrincipal();
-                break;
-                
-            default:
-                menuListasSimples();
-        }
-    }
-    
-    public void crearListasSimples()
-    {
-        
-    }
-    
-    public void menuAdicionarListasSimples()
-    {
-        int opc;
-        System.out.println("MENU ADICIONAR LISTAS SIMPLES");
-        System.out.println("1. Adicionar por el inicio listas simples.");
-        System.out.println("2. Adicionar por el fin listas simples.");
-        System.out.println("3. Adicionar antes de nodo listas simples");
-        System.out.println("4. Adicionar despues de nodo listas simples");
-        System.out.println("5. Volver.");
-        
-        System.out.println("\nEscoja una opcion;");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                adicionarInicioListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 2:
-                adicionarFinListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 3:
-                adicionarAntesListasSimples();
-                menuAdicionarListasSimples();
-                break;
-                
-            case 4:
-                adicionarDespuesListasSimples();
-                menuAdicionarListasSimples();
-                break;
-            
-            case 5:
-                menuListasSimples();
-                break;
-                
-            default:
-                menuAdicionarListasSimples();
-                break;
-        }
-    }
-    
-    public void adicionarInicioListasSimples()
-    {
-        
-    }
-    
-    public void adicionarFinListasSimples()
-    {
-        
-    }
-    
-    public void adicionarAntesListasSimples()
-    {
-        
-    }
-    
-    public void adicionarDespuesListasSimples()
-    {
-        
-    }
-    
-    public void menuEliminarListasSimples()
-    {
-        int opc;
-        System.out.println("MENU ELIMINAR LISTAS SIMPLES");
-        System.out.println("1. Eliminar por el inicio listas simples.");
-        System.out.println("2. Eliminar por el fin listas simples.");
-        System.out.println("3. Eliminar antes de nodo listas simples");
-        System.out.println("4. Eliminar despues de nodo listas simples");
-        System.out.println("5. Eliminar nodo dado listas simples.");
-        System.out.println("6. Volver.");
-        
-        System.out.println("\nEscoja una opcion;");
-        opc = leer.nextInt();
-        
-        switch (opc) {
-            case 1:
-                eliminarInicioListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 2:
-                eliminarFinListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 3:
-                eliminarAntesListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 4:
-                eliminarDespuesListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 5:
-                eliminarNodoDadoListasSimples();
-                menuEliminarListasSimples();
-                break;
-                
-            case 6:
-                menuListasSimples();
-                break;
-                
-            default:
-                menuEliminarListasSimples();
-                break;
-        }
-    }
-    
-    public void eliminarInicioListasSimples()
-    {
-        
-    }
-    
-    public void eliminarFinListasSimples()
-    {
-        
-    }
-    
-    public void eliminarAntesListasSimples()
-    {
-        
-    }
-    
-    public void eliminarDespuesListasSimples()
-    {
-        
-    }
-    
-    public void eliminarNodoDadoListasSimples()
-    {
-        
-    }
-    
-    public void modificarListasSimples()
-    {
-        
-    }
-    */
-    
+
 }

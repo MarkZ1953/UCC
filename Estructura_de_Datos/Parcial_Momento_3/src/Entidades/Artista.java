@@ -1,9 +1,11 @@
+package Entidades;
+
 public class Artista {
     
-    String nombre;
-    String nacionalidad;
-    String fechaNacimiento;
-    Artista siguiente;
+    private String nombre;
+    private String nacionalidad;
+    private String fechaNacimiento;
+    public Artista siguiente;
     
     public Artista(String nombre, String nacionalidad, String fechaNacimiento)
     {
@@ -43,6 +45,13 @@ public class Artista {
 
     public void setSiguiente(Artista siguiente) {
         this.siguiente = siguiente;
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre +
+        "\nNacionalidad: " + nacionalidad +
+        "\nFecha De Nacimiento: " + fechaNacimiento;
     }
     
     

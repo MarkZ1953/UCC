@@ -1,4 +1,4 @@
-/*
+package Entidades;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -6,23 +6,24 @@
 
 public class PerrosCalientes {
     
-    String nombre;
-    String nacionalidad;
-    double peso;
-    double velocidadIngestion;
-    int perrosConsumidos;
-    String categoria;
-    PerrosCalientes sig;
+    private String nombre;
+    private String nacionalidad;
+    private double peso;
+    private double velocidadIngestion;
+    private int perrosConsumidos;
+    private String categoria;
+    public PerrosCalientes siguiente;
     
-    public PerrosCalientes(String nom, String nac,double pes,double vel,int per,String cat  )
+    public PerrosCalientes(String nombre, String nacionalidad, double peso, double velocidadIngestion,
+                           int perrosConsumidos, String categoria)
     {
-        nombre=nom;
-        nacionalidad=nac;
-        peso=pes;
-        velocidadIngestion=vel;
-        perrosConsumidos=per;
-        categoria=cat;
-        sig = null;
+        this.nombre = nombre;
+        this.nacionalidad = nacionalidad;
+        this.peso = peso;
+        this.velocidadIngestion = velocidadIngestion;
+        this.perrosConsumidos = perrosConsumidos;
+        this.categoria = categoria;
+        siguiente = null;
     }
 
     public String getNombre() {
@@ -73,12 +74,21 @@ public class PerrosCalientes {
         this.categoria = categoria;
     }
 
-    public PerrosCalientes getSig() {
-        return sig;
+    public PerrosCalientes getSiguiente() {
+        return siguiente;
     }
 
-    public void setSig(PerrosCalientes sig) {
-        this.sig = sig;
+    public void setSiguiente(PerrosCalientes siguiente) {
+        this.siguiente = siguiente;
     }
-    
+
+    @Override
+    public String toString() {
+        return  "Nombre: " + nombre +
+                "\nNacionalidad: " + nacionalidad +
+                "\nPeso: " + peso +
+                "\nVelocidad Ingestion: " + velocidadIngestion +
+                "\nPerros Consumidos: " + perrosConsumidos +
+                "\nCategoria: " + categoria;
+    }
 }

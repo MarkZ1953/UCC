@@ -1,4 +1,4 @@
-/*
+package Entidades;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -9,11 +9,11 @@
  */
 public class PaginasAmarillas {
     
-    PaginasAmarillas ant;
-    String nombre;
-    String direccion;
-    String telefono;
-    PaginasAmarillas sig;
+    public PaginasAmarillas ant;
+    private String nombre;
+    private String direccion;
+    private String telefono;
+    public PaginasAmarillas sig;
     
     public PaginasAmarillas(String nom,String direc,String tel)
     {
@@ -63,5 +63,11 @@ public class PaginasAmarillas {
     public void setSig(PaginasAmarillas sig) {
         this.sig = sig;
     }
-    
+
+    @Override
+    public String toString() {
+        return  "Nombre: " + nombre +
+                "Direccion: " + direccion +
+                "Telefono: " + telefono;
+    }
 }
