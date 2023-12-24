@@ -1,13 +1,19 @@
 package Listas.ClasesListas.SubClasesListasSimples;
 
 import Entidades.Artista;
-import Listas.ListasSC;
 
-public class EliminarListasSimples extends ListasSC {
+import java.util.Scanner;
+
+public class EliminarListasSimples {
+
+    private Artista cabezaArtista;
+    private Artista punteroArtista;
+    private Artista nodoNuevoArtista;
+    public Scanner leer = new Scanner(System.in);
 
     public void menuEliminarListasSimples()
     {
-        int opc;
+        int opcion;
         System.out.println("MENU ELIMINAR LISTAS SIMPLES");
         System.out.println("1. Eliminar por el inicio listas simples.");
         System.out.println("2. Eliminar por el fin listas simples.");
@@ -17,9 +23,9 @@ public class EliminarListasSimples extends ListasSC {
         System.out.println("6. Volver.");
 
         System.out.println("\nEscoja una opcion;");
-        opc = leer.nextInt();
+        opcion = leer.nextInt();
 
-        switch (opc) {
+        switch (opcion) {
             case 1:
                 eliminarInicioListasSimples();
                 menuEliminarListasSimples();
@@ -52,6 +58,20 @@ public class EliminarListasSimples extends ListasSC {
                 menuEliminarListasSimples();
                 break;
         }
+    }
+
+    public boolean verificarExistenciaNodoListasSimples(String nombre) {
+        boolean nodoEncontrado = false;
+
+        punteroArtista = cabezaArtista;
+
+        while (punteroArtista != null) {
+            punteroArtista = punteroArtista.siguiente;
+            nodoEncontrado = true;
+            break;
+        }
+
+        return nodoEncontrado;
     }
 
     public void eliminarAntesListasSimples()
@@ -141,7 +161,7 @@ public class EliminarListasSimples extends ListasSC {
             }
 
         } else {
-            System.out.println("No se ha encontrado el Entidades.Artista que se estaba buscando");
+            System.out.println("No se ha encontrado el Artista que se estaba buscando");
         }
     }
 
@@ -175,6 +195,51 @@ public class EliminarListasSimples extends ListasSC {
             }
         } else {
             System.out.println("No se ha encontrado el Entidades.Artista que se estaba buscando");
+        }
+    }
+
+    public void eliminarInicioListasSimples()
+    {
+        System.out.println("Referencia cabeza: " + cabezaArtista);
+
+        // Preguntamos si hay valores que se puedan eliminar
+        if (cabezaArtista != null) {
+
+            // Hacemos que el puntero inicie desde la cabeza
+            punteroArtista = cabezaArtista;
+
+            // Luis = Luis.siguiente = elsa
+            punteroArtista = punteroArtista.siguiente;
+
+            cabezaArtista = punteroArtista;
+
+            System.out.println("Se ha eliminado correctamente");
+//
+//            return cabezaArtista;
+        } else {
+            System.out.println("No hay elementos que se puedan eliminar");
+        }
+
+
+    }
+
+    public void eliminarFinListasSimples()
+    {
+        // Pregunta si hay por lo menos dos elementos, sino hay se elimina la cabeza
+        if (cabezaArtista.siguiente == null) {
+            cabezaArtista = null;
+        } else {
+            // Hacemos que el puntero inicie desde la cabeza
+            punteroArtista = cabezaArtista;
+
+            // Recorremos la lista para hallar el ultimo valor, preguntando si el siguiente del ultimo valor es
+            // diferente de null
+            while (punteroArtista.siguiente.siguiente != null) {
+                punteroArtista = punteroArtista.siguiente;
+            }
+
+            // Eliminamos el ultimo nodo de la lista
+            punteroArtista.siguiente = null;
         }
     }
 }

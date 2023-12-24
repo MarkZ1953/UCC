@@ -1,15 +1,93 @@
 package Listas.ClasesListas.SubClasesListasSimples;
 
 import Entidades.Artista;
-import Listas.ListasSC;
 
-public class AgregarListasSimples extends ListasSC {
+import java.util.Scanner;
+
+public class AgregarListasSimples {
+
+    public Artista cabezaArtista;
+    public Artista punteroArtista;
+    public Artista nodoNuevoArtista;
+    public Scanner leer = new Scanner(System.in);
+
+    public Artista recolectarInformacionArtista() {
+
+        String nombre, nacionalidad, fechaNacimiento;
+
+        System.out.println("Digite el nombre del artista: ");
+        nombre = leer.next();
+
+        System.out.println("Digite la nacionalidad del artista: ");
+        nacionalidad = leer.next();
+
+        System.out.println("Digite fecha de nacimiento del artista: ");
+        fechaNacimiento = leer.next();
+
+        return new Artista(nombre, nacionalidad, fechaNacimiento);
+    }
+
+    public void menuAdicionarListasSimples()
+    {
+        int opcion;
+        System.out.println("MENU ADICIONAR LISTAS SIMPLES");
+        System.out.println("1. Adicionar por el inicio listas simples.");
+        System.out.println("2. Adicionar por el fin listas simples.");
+        System.out.println("3. Adicionar antes de nodo listas simples");
+        System.out.println("4. Adicionar despues de nodo listas simples");
+        System.out.println("5. Volver.");
+
+        System.out.println("\nEscoja una opcion;");
+        opcion = leer.nextInt();
+
+        switch (opcion) {
+            case 1:
+                adicionarInicioListasSimples();
+                menuAdicionarListasSimples();
+                break;
+
+            case 2:
+                adicionarFinListasSimples();
+                menuAdicionarListasSimples();
+                break;
+
+            case 3:
+                adicionarAntesListasSimples();
+                menuAdicionarListasSimples();
+                break;
+
+            case 4:
+                adicionarDespuesListasSimples();
+                menuAdicionarListasSimples();
+                break;
+
+            case 5:
+                break;
+
+            default:
+                menuAdicionarListasSimples();
+                break;
+        }
+    }
 
     public void adicionarInicioListasSimples()
     {
         nodoNuevoArtista = recolectarInformacionArtista();
         nodoNuevoArtista.siguiente = cabezaArtista;
         cabezaArtista = nodoNuevoArtista;
+
+        System.out.println("Se ha agregado correctamente el nuevo Artista");
+    }
+
+    public void adicionarFinListasSimples()
+    {
+        nodoNuevoArtista = recolectarInformacionArtista();
+        punteroArtista = cabezaArtista;
+
+        while(punteroArtista.siguiente != null) {
+            punteroArtista = punteroArtista.siguiente;
+            punteroArtista.siguiente = nodoNuevoArtista;
+        }
     }
 
     public void adicionarDespuesListasSimples()

@@ -1,17 +1,36 @@
 package Listas.ClasesListas;
 
-import Listas.ClasesListas.SubClasesListasCirculares.ImprimirListasDobles;
-import Listas.ClasesListas.SubClasesListasSimples.AgregarListasSimples;
-import Listas.ClasesListas.SubClasesListasSimples.EliminarListasSimples;
-import Listas.ClasesListas.SubClasesListasSimples.ImprimirListasSimples;
-import Listas.ClasesListas.SubClasesListasSimples.ReportesListasSimples;
+import Entidades.Artista;
+import Listas.ClasesListas.SubClasesListasSimples.*;
+
+import java.util.Scanner;
 
 public class ListasSimples {
+    EliminarListasSimples eliminarListasSimples;
+    AgregarListasSimples agregarListasSimples;
+    ImprimirListasSimples imprimirListasSimples;
+    ReportesListasSimples reportesListasSimples;
+    ModificarListasSimples modificarListasSimples = new ModificarListasSimples();
+    Artista cabezaListasSimples;
+    public Scanner leer = new Scanner(System.in);
 
-    EliminarListasSimples eliminarListasSimples = new EliminarListasSimples();
-    AgregarListasSimples agregarListasSimples = new AgregarListasSimples();
-    ImprimirListasSimples imprimirListasSimples = new ImprimirListasSimples();
-    ReportesListasSimples reportesListasSimples = new ReportesListasSimples();
+    public ListasSimples(Artista cabezaArtista, Artista punteroArtista, Artista nodoNuevoArtista) {
+        cabezaListasSimples = cabezaArtista;
+
+        agregarListasSimples = new AgregarListasSimples();
+        reportesListasSimples = new ReportesListasSimples();
+        eliminarListasSimples = new EliminarListasSimples();
+        imprimirListasSimples = new ImprimirListasSimples();
+    }
+
+    public Artista cambiarReferenciaCabezaListasSimples(Artista cabezaActual, Artista nodoCabezaNueva) {
+        Artista cabezaNueva;
+
+        cabezaNueva = nodoCabezaNueva;
+        cabezaNueva.siguiente = cabezaActual;
+
+        return cabezaNueva;
+    }
 
     public void menuListasSimples()
     {
@@ -41,17 +60,17 @@ public class ListasSimples {
                 break;
 
             case 3:
-                modificarListasSimples();
+//                modificarListasSimples.modificarListasSimples();
                 menuListasSimples();
                 break;
 
             case 4:
-                imprimirListasSimples.imprimirListasSimples();
+                imprimirListasSimples.imprimirListasSimples(cabezaListasSimples);
                 menuListasSimples();
                 break;
 
             case 5:
-                imprimirNodosImparesArtista();
+                imprimirListasSimples.imprimirNodosImparesArtista();
                 menuListasSimples();
                 break;
 
@@ -61,7 +80,6 @@ public class ListasSimples {
                 break;
 
             case 7:
-                menuPrincipal();
                 break;
 
             default:

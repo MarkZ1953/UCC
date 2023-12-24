@@ -2,17 +2,32 @@ import Listas.ClasesListas.ListasCirculares;
 import Listas.ClasesListas.ListasCircularesDobles;
 import Listas.ClasesListas.ListasDobles;
 import Listas.ClasesListas.ListasSimples;
+import Listas.ListasSC;
+
+import java.util.Scanner;
 
 public class Listas {
-    
-    ListasSimples listasSimples = new ListasSimples();
+
+    ListasSC listasSC;
+    ListasSimples listasSimples;
     ListasCirculares listasCirculares = new ListasCirculares();
     ListasDobles listasDobles = new ListasDobles();
     ListasCircularesDobles listasCircularesDobles = new ListasCircularesDobles();
+    public Scanner leer = new Scanner(System.in);
     
     public Listas() {
+        listasSC = new ListasSC();
+
+        listasSimples = new ListasSimples(
+                listasSC.getCabezaArtista(),
+                listasSC.getPunteroArtista(),
+                listasSC.getNodoNuevoArtista()
+        );
+
         menuPrincipal();
     }
+
+
 
     public void menuPrincipal()
     {
@@ -36,17 +51,17 @@ public class Listas {
                 break;
                 
             case 2:
-                listasCirculares.menuListasCirculares();
+//                listasCirculares.menuListasCirculares();
                 menuPrincipal();
                 break;
                 
             case 3:
-                listasDobles.menuListasDobles();
+//                listasDobles.menuListasDobles();
                 menuPrincipal();
                 break;
                 
             case 4:
-                listasCircularesDobles.menuListasCircularesDobles();
+//                listasCircularesDobles.menuListasCircularesDobles();
                 menuPrincipal();
                 break;
                 
@@ -62,5 +77,4 @@ public class Listas {
     public static void main(String[] args) {
         Listas listas = new Listas();
     }
-
 }

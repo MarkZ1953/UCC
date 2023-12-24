@@ -22,13 +22,26 @@ public class ListasSC {
     int opc;
     public File archivo = new File("C:\\Users\\FelipeCastro\\Documents\\GitHub\\UCC\\Estructura_de_Datos\\Parcial_Momento_3\\src\\Informacion\\Archivo.txt");
 
-    private static class NodoArtista {
-        public Artista artista;
-        public NodoArtista siguiente = null;
-        public NodoArtista(Artista artista) {
-            this.artista = artista;
-        }
+    public ListasSC() {
+        cargarArtistasListasSimples();
     }
+
+    public Artista getCabezaArtista() {
+        return cabezaArtista;
+    }
+
+    public Artista getPunteroArtista() {
+        return punteroArtista;
+    }
+
+    public Artista getNodoNuevoArtista() {
+        return nodoNuevoArtista;
+    }
+
+    public PerrosCalientes getCabezaPerrosCalientes() {
+        return cabezaPerrosCalientes;
+    }
+
 
     public Artista recolectarInformacionArtista() {
 
@@ -63,39 +76,6 @@ public class ListasSC {
         nodoNuevoArtista = new Artista("Estela","india","21/12/1991");
         punteroArtista.siguiente = nodoNuevoArtista;
         punteroArtista = nodoNuevoArtista;
-    }
-    
-    public void adicionarFinListasSimples()
-    {
-        nodoNuevoArtista = recolectarInformacionArtista();
-        punteroArtista = cabezaArtista;
-
-        while(punteroArtista.siguiente != null) {
-            punteroArtista = punteroArtista.siguiente;
-            punteroArtista.siguiente = nodoNuevoArtista;
-        }
-    }
-
-    public void imprimirNodosImparesArtista() {
-        int contador = 1;
-        punteroArtista = cabezaArtista;
-
-        while (true)
-        {
-            System.out.println();
-            System.out.println("Id: " + contador);
-            System.out.println(punteroArtista.toString());
-            System.out.println("Direccion de memoria del Nodo: "+ punteroArtista);
-
-            if (punteroArtista.siguiente != null) {
-                punteroArtista = punteroArtista.siguiente.siguiente;
-                contador = contador + 2;
-            } else {
-                break;
-            }
-        }
-
-        System.out.println();
     }
 
     public void cargarArtistasListasSimples()
@@ -136,6 +116,8 @@ public class ListasSC {
 
             }
 
+            System.out.println("Se han agreado correctamente los Artista a la Lista");
+
             bufer.close();
             reader.close();
 
@@ -144,65 +126,6 @@ public class ListasSC {
         {
             System.out.println("Error al leer informacion del archivo");
         }
-    }
-    
-    public void eliminarInicioListasSimples()
-    {
-        // Preguntamos si hay valores que se puedan eliminar
-        if (cabezaArtista != null) {
-            // Creamos un nodo temporal que no almacene el resto de la cola
-            Artista nodoTemporal;
-
-            // Hacemos que el puntero inicie desde la cabeza
-            punteroArtista = cabezaArtista;
-
-            // Hacemos que el nodo temporal se quede con el siguiente del puntero
-            nodoTemporal = punteroArtista.siguiente;
-
-            // Hacemos que la cabeza ahora sea el nodo temporal o lo que seguia despues del primer nodo
-            cabezaArtista = nodoTemporal;
-
-            // Eliminamos el nodo temporal
-            nodoTemporal = null;
-
-            System.out.println("Se ha eliminado correctamente");
-        } else {
-            System.out.println("No hay elementos que se puedan eliminar");
-        }
-    }
-    
-    public void eliminarFinListasSimples()
-    {
-        // Pregunta si hay por lo menos dos elementos, sino hay se elimina la cabeza
-        if (cabezaArtista.siguiente == null) {
-            cabezaArtista = null;
-        } else {
-            // Hacemos que el puntero inicie desde la cabeza
-            punteroArtista = cabezaArtista;
-
-            // Recorremos la lista para hallar el ultimo valor, preguntando si el siguiente del ultimo valor es
-            // diferente de null
-            while (punteroArtista.siguiente.siguiente != null) {
-                punteroArtista = punteroArtista.siguiente;
-            }
-
-            // Eliminamos el ultimo nodo de la lista
-            punteroArtista.siguiente = null;
-        }
-    }
-
-    public boolean verificarExistenciaNodoListasSimples(String nombre) {
-        boolean nodoEncontrado = false;
-        
-        punteroArtista = cabezaArtista;
-
-        while (punteroArtista != null) {
-            punteroArtista = punteroArtista.siguiente;
-            nodoEncontrado = true;
-            break;
-        }
-
-        return nodoEncontrado;
     }
     
     public void modificarListasSimples()

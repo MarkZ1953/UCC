@@ -47,12 +47,11 @@ public class Artista {
         this.siguiente = siguiente;
     }
 
-    @Override
-    public String toString() {
+    public String obtenerInformacion() {
         return "Nombre: " + nombre +
         "\nNacionalidad: " + nacionalidad +
         "\nFecha De Nacimiento: " + fechaNacimiento;
     }
-    
+
     
 }

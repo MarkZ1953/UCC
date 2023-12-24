@@ -11,13 +11,8 @@ public class ReportesListasSimples {
     private Artista cabezaArtista;
     private Artista punteroArtista;
     private Artista nodoNuevoArtista;
-    Scanner leer = new Scanner(System.in);
 
-    public ReportesListasSimples(Artista cabezaArtista, Artista punteroArtista, Artista nodoNuevoArtista) {
-        this.cabezaArtista = cabezaArtista;
-        this.punteroArtista = punteroArtista;
-        this.nodoNuevoArtista = nodoNuevoArtista;
-    }
+    public Scanner leer = new Scanner(System.in);
 
     public void menuReportesListasSimples() {
         int opcion;
