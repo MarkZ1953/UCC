@@ -23,10 +23,11 @@ class VehicleFactory:
             raise ValueError("Tipo de vehículo desconocido")
 
 
-# Uso del Factory Method
-factory = VehicleFactory()
-car = factory.create_vehicle("car")
-truck = factory.create_vehicle("truck")
+if __name__ == '__main__':
+    # Uso del Factory Method
+    factory = VehicleFactory()
+    car = factory.create_vehicle("car")
+    truck = factory.create_vehicle("truck")
 
-car.drive()  # Salida: Conduciendo un automóvil.
-truck.drive()  # Salida: Conduciendo un camión.
+    car.drive()  # Salida: Conduciendo un automóvil.
+    truck.drive()  # Salida: Conduciendo un camión.

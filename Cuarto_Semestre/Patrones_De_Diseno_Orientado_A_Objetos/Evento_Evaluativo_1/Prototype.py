@@ -17,10 +17,11 @@ class Document(Prototype):
         return copy.deepcopy(self)
 
 
-# Uso del Prototype
-original_document = Document("Contenido del documento original")
-cloned_document = original_document.clone()
+if __name__ == '__main__':
+    # Uso del Prototype
+    original_document = Document("Contenido del documento original")
+    cloned_document = original_document.clone()
 
-print(original_document)  # Salida: Contenido del documento original
-print(cloned_document)  # Salida: Contenido del documento original
-print(original_document is cloned_document)  # Salida: False
+    print(original_document)  # Salida: Contenido del documento original
+    print(cloned_document)  # Salida: Contenido del documento original
+    print(original_document is cloned_document)  # Salida: False
