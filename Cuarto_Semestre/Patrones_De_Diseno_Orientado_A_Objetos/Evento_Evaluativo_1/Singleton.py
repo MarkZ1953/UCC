@@ -1,43 +1,50 @@
-class MultimediaResourceManager:
-    _instance = None
+import copy
 
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super().__new__(cls, *args, **kwargs)
-        return cls._instance
 
+def singleton(cls):
+    instances = dict()
+
+    def wrap(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+
+        return instances[cls]
+
+    return wrap
+
+
+@singleton
+class MultimediaResourceManager():
     def __init__(self):
-        self.connection = None
-        self.connected = False
+        super().__init__()
+        self.connection = False
 
     def connect(self, database):
-        if not self.connected:
+        if not self.connection:
             # Código para conectarse a la base de datos
-            self.connection = f"Conexión establecida con {database}"
-            self.connected = True
-            print("Conexión establecida.")
+            self.connection = True
+            print(f"Conexión establecida con {database}.")
         else:
             print("Ya estás conectado a la base de datos.")
 
     def disconnect(self):
-        if self.connected:
+        if self.connection:
             # Código para cerrar la conexión con la base de datos
-            self.connection = None
-            self.connected = False
+            self.connection = False
             print("Conexión cerrada.")
         else:
             print("No estás conectado a la base de datos.")
 
 
-if __name__ == '__main__':
-    # Uso del Singleton
-    resource_manager1 = MultimediaResourceManager()
-    resource_manager2 = MultimediaResourceManager()
+# Uso del Singleton
+resource_manager1 = MultimediaResourceManager()
+resource_manager2 = MultimediaResourceManager()
 
-    print(resource_manager1 is resource_manager2)  # Salida: True
+print(resource_manager1 is resource_manager2)  # Salida: True
 
-    resource_manager1.connect("multimedia_db")
-    resource_manager2.connect("another_db")
+resource_manager1.connect("multimedia_db")
+resource_manager1.connect("multimedia_db")
+resource_manager1.connect("multimedia_db")
 
-    resource_manager1.disconnect()
-    resource_manager2.disconnect()
+resource_manager1.disconnect()
+resource_manager2.disconnect()
