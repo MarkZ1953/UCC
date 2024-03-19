@@ -1,22 +1,19 @@
-# Metodo de Biseccion
-
 from tabulate import tabulate
 import math
 
-iteraciones: int = int(input("Ingrese la cantidad de Iteraciones: "))
-a: float = float(input("Ingrese el valor de a: "))
-b: float = float(input("Ingrese el valor de b: "))
-funcion: str = input("Ingrese la funcion: ")
+
+class MetodoBiseccion:
+    def __init__(self, funcion: str, iteraciones: int,  a: float, b: float):
+        self.funcion: str = funcion
+        self.iteraciones: int = iteraciones
+        self.a: float = a
+        self.b: float = b
+
 fafc = ""
 fbfc = ""
 ea: float = 100
 
 cActual: float = 0
-
-# Datos de ejemplo
-
-# 5*x**3-5*x**2+6*x-2
-# x**4+3*x**3-2
 
 data = []
 
@@ -72,10 +69,3 @@ for i in range(iteraciones):
     data[i].append(fafc.ljust(1))
     data[i].append(fbfc.ljust(1))
     data[i].append(f"{ea} %")
-
-__headers = ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
-
-# Imprimir la tabla
-print(tabulate(data, headers=__headers, numalign="center", stralign="center"))
-
-# Metodo de Falsa Posicion
