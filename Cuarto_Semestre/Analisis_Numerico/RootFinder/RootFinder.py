@@ -8,6 +8,8 @@ import math
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
+from Biseccion import MetodoBiseccion
+
 
 class Calculadora(QMainWindow):
     def __init__(self):
@@ -39,7 +41,7 @@ class Calculadora(QMainWindow):
         self.layoutTabla = QVBoxLayout()
         self.layoutTabla.addWidget(self.tablaResultados)
 
-        #self.layout_principal.addLayout(self.layoutCalculadora)
+        # self.layout_principal.addLayout(self.layoutCalculadora)
         self.layout_principal.addLayout(self.layoutCalculadora)
         self.layout_principal.addLayout(self.layoutTabla)
 
@@ -187,32 +189,21 @@ class Calculadora(QMainWindow):
             4: "Ingrese el error porcentual al que desea llegar"
         }
 
-    #try:
+        # try:
         if texto_boton == "C":
             self.entrada_texto.clear()
         elif texto_boton == "=":
             if self.contadorPeticiones < 4:
-
                 self.contadorPeticiones += 1
-
                 self.peticiones.setText(peticiones[self.contadorPeticiones])
-
                 # Guardamos los datos que se van pidiendo en la calculadora
                 self.datosOperacion.update({self.contadorPeticiones - 1: self.entrada_texto.text()})
-
-                print(self.datosOperacion)
-
                 self.entrada_texto.clear()
             else:
-                print(self.datosOperacion)
-                # Cuando termina de pedir todos los datos, entonces hace la operacion
-                # resultado = str(eval(self.entrada_texto.text()))
+                self.retornarResultadoOperacion(self.datosOperacion)
                 self.entrada_texto.clear()
                 self.contadorHistorialOperaciones += 1
                 self.historialOperaciones.update({self.contadorHistorialOperaciones: self.datosOperacion})
-                resultado = self.retornarResultadoOperacion(self.datosOperacion)
-                self.entrada_texto.insert(resultado)
-                contador = 0
         elif texto_boton == "\u232B":
             self.eliminarUltimoCaracter()
         else:
@@ -221,12 +212,13 @@ class Calculadora(QMainWindow):
                 self.entrada_texto.insert(texto_boton)
             else:
                 self.entrada_texto.insert(texto_boton)
-    #except ZeroDivisionError:
-        #self.entrada_texto.clear()
-        #self.entrada_texto.insert("No puedes Dividir por Cero")
-    #except Exception as e:
-       ##  self.entrada_texto.clear()
-       # self.entrada_texto.insert(f"Ocurrio un Error: {e}")
+
+    # except ZeroDivisionError:
+    # self.entrada_texto.clear()
+    # self.entrada_texto.insert("No puedes Dividir por Cero")
+    # except Exception as e:
+    ##  self.entrada_texto.clear()
+    # self.entrada_texto.insert(f"Ocurrio un Error: {e}")
 
     def eliminarUltimoCaracter(self):
         texto = self.entrada_texto.text()
@@ -235,6 +227,8 @@ class Calculadora(QMainWindow):
 
     def retornarResultadoOperacion(self, datosOperacion: dict):
         operacion: str = datosOperacion[0]
+        print(f"Operacion: {operacion}")
+        print(f"Datos de la Operacion: {datosOperacion}")
 
         operacion = (operacion.replace("sen", "math.sin")
                      .replace("tan", "math.tan")
@@ -246,73 +240,17 @@ class Calculadora(QMainWindow):
         iteraciones: int = int(datosOperacion[1])
         a: float = float(datosOperacion[2])
         b: float = float(datosOperacion[3])
-        fafc = ""
-        fbfc = ""
-        ea: float = 100
 
-        cActual: float = 0
+        print(self.cbMetodo.currentData())
 
-        # Datos de ejemplo
-
-        # 5*x**3-5*x**2+6*x-2
-        # x**4+3*x**3-2
-        contadorResultados = 0
-        data = []
-        resultados = {}
-
-        for i in range(iteraciones):
-            data = []
-            cAnterior = cActual
-
-            # Calculamos ci
-            cActual = (a + b) / 2
-
-            # Calculamos f(a)
-            fa = eval(operacion.replace("X", f"({a})"))
-
-            # Calculamos f(b)
-            fb = eval(operacion.replace("X", f"({b})"))
-
-            # Calculamos f(ci)
-            fc = eval(operacion.replace("X", f"({cActual})"))
-
-            # Calculamos Ea
-
-            # Ea = (a-c)/a * 100
-            data.append(str(a))
-            data.append(str(b))
-            data.append(str(cActual))
-            data.append(str(fa))
-            data.append(str(fb))
-            data.append(str(fc))
-
-            # Hallamos f(a) * f(ci)
-
-            if fa * fc < 0:
-                b = cActual
-                fafc = "-"
-                fbfc = "+"
-
-            # Hallamos f(ci) * f(b)
-
-            if fb * fc < 0:
-                a = cActual
-                fbfc = "-"
-                fafc = "+"
-
-            try:
-                ea = abs((cAnterior - cActual) / cActual * 100)
-            except Exception as e:
-                pass
-
-            data.append(fafc.ljust(1))
-            data.append(fbfc.ljust(1))
-            data.append(f"{ea} %")
-
-            resultados.update({contadorResultados: data})
-            contadorResultados += 1
-
-        self.tablaResultados.actualizarTablaReservas(resultados)
+        if self.cbMetodo.currentData() == 0:
+            # Resolvemos por metodo de biseccion
+            metodoBiseccion = MetodoBiseccion(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
+            self.tablaResultados.actualizarTablaReservas(metodoBiseccion.calcularResultado())
+            
+        elif self.cbMetodo.currentData() == 1:
+            # Resolvemos por metodo de falsa posicion
+            pass
 
 
 class TablaResultados(QTableWidget):
@@ -344,14 +282,13 @@ class TablaResultados(QTableWidget):
         print(resultadosOperacion)
 
         for iteracion, resultado in resultadosOperacion.items():
-
             print(f"Iteracion: {iteracion}")
             print(resultado)
             self.insertRow(iteracion)
             self.setRowHeight(iteracion, 30)
 
             # Iteraciones
-            self.setItem(iteracion, 0, QTableWidgetItem(str(iteracion+1)))
+            self.setItem(iteracion, 0, QTableWidgetItem(str(iteracion + 1)))
             self.item(iteracion, 0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.item(iteracion, 0).setFont(QFont("Arial", 10, QFont.Bold))
             self.item(iteracion, 0).setFlags(~Qt.ItemFlag.ItemIsEditable)
@@ -404,17 +341,17 @@ class TablaResultados(QTableWidget):
             self.item(iteracion, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.item(iteracion, 9).setFlags(~Qt.ItemFlag.ItemIsEditable)
 
-            #if reserva.estadoR == "Pendiente":
-              #  self.setItem(fila, 9, QTableWidgetItem(reserva.estadoR))
-             #   self.item(fila, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-               # self.item(fila, 9).setBackground(QBrush(QColor("yellow")))
-               # self.item(fila, 9).setForeground(QBrush(Qt.GlobalColor.black))
-              #  self.item(fila, 9).setFlags(~Qt.ItemFlag.ItemIsEditable)
-            #elif reserva.estadoR == "Pagado":
-              ## self.item(fila, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-              #  self.item(fila, 9).setBackground(QBrush(QColor("green")))
-              #  self.item(fila, 9).setForeground(QBrush(Qt.GlobalColor.white))
-               # self.item(fila, 9).setFlags(~Qt.ItemFlag.ItemIsEditable)
+            # if reserva.estadoR == "Pendiente":
+            #  self.setItem(fila, 9, QTableWidgetItem(reserva.estadoR))
+            #   self.item(fila, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            # self.item(fila, 9).setBackground(QBrush(QColor("yellow")))
+            # self.item(fila, 9).setForeground(QBrush(Qt.GlobalColor.black))
+            #  self.item(fila, 9).setFlags(~Qt.ItemFlag.ItemIsEditable)
+            # elif reserva.estadoR == "Pagado":
+            ## self.item(fila, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            #  self.item(fila, 9).setBackground(QBrush(QColor("green")))
+            #  self.item(fila, 9).setForeground(QBrush(Qt.GlobalColor.white))
+            # self.item(fila, 9).setFlags(~Qt.ItemFlag.ItemIsEditable)
 
     def confirmar(self, fila, columna):
         if columna == 0:
@@ -437,7 +374,6 @@ class TablaResultados(QTableWidget):
                 self.ventanaDetallePago.raise_()
 
             self.ventanaDetallePago.frame_pago.cambiarValores(idPago.text())
-
 
 
 if __name__ == '__main__':
