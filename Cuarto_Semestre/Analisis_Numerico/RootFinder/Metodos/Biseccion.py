@@ -36,8 +36,6 @@ class MetodoBiseccion:
             # Calculamos f(ci)
             fc = self.calcularFaFbFc(self.cActual)
 
-            # Calculamos Ea
-
             # Ea = (a-c)/a * 100
             self.data.append(str(self.a))
             self.data.append(str(self.b))
@@ -47,18 +45,12 @@ class MetodoBiseccion:
             self.data.append(str(fc))
 
             # Hallamos f(a) * f(ci)
-
-            print(f"F(a): {fa}"
-                  f"\nF(b): {fb}"
-                  f"\nF(c): {fc}")
-
             if fa * fc < 0:
                 self.b = self.cActual
                 self.fafc = "-"
                 self.fbfc = "+"
 
             # Hallamos f(ci) * f(b)
-
             if fb * fc < 0:
                 self.a = self.cActual
                 self.fbfc = "-"
