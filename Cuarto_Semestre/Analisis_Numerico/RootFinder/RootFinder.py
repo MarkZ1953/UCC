@@ -144,9 +144,6 @@ class Calculadora(QMainWindow):
                 self.grid_layout.addWidget(self.botones[texto_boton], posicion[0], posicion[1])
 
     def keyPressEvent(self, event) -> None:
-
-        # print(f"Se presiono la Key : {event.key()}")
-
         permitidos = [Qt.Key.Key_1,
                       Qt.Key.Key_2,
                       Qt.Key.Key_3,
