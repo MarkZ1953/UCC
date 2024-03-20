@@ -18,9 +18,6 @@ class MetodoBiseccion:
     def calcularFaFbFc(self, valor: float):
         return eval(self.funcion.replace("X", f"({valor})"))
 
-    def calcularEa(self):
-        pass
-
     def calcularResultado(self):
         for i in range(self.iteraciones):
             self.data = []
