@@ -1,32 +1,36 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QGridLayout, QPushButton, QWidget, QVBoxLayout, QLineEdit, \
-    QSizePolicy, QApplication, QLabel, QHBoxLayout, QComboBox
+    QSizePolicy, QApplication, QLabel, QHBoxLayout, QComboBox, QFormLayout, QMessageBox
 
+from Componentes.VentanaResultados import VentanaResultados
+from Excepciones.Excepciones import LlenarCamposVaciosException
 from Metodos.Biseccion import MetodoBiseccion
 from Componentes.TablaResultados import TablaResultados
 from Metodos.FalsaPosicion import MetodoFalsaPosicion
 
 
-class Calculadora(QMainWindow):
+class RootFinder(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.datosOperacion = {}
+        self.cajas = {}
         self.historialOperaciones = {}
         self.contadorHistorialOperaciones = 0
+
+        self.setContentsMargins(10, 10, 10, 10)
 
         self.contadorPeticiones = 0
         self.botones = {}
         self.grid_layout = None
         self.entrada_texto = None
-        self.resize(500, 500)
+        self.resize(800, 600)
         self.operaciones = {}
-        # self.setWindowIcon(QIcon(QPixmap("Imagenes/calculator-gray.png")))
 
         self.setWindowTitle("Calculadora")
         # self.setFixedSize(235, 270)
 
-        self.tablaResultados = TablaResultados()
+        self.ventanaResultados = VentanaResultados()
 
         # Creamos un layout principal
         self.layout_principal = QVBoxLayout()
@@ -35,21 +39,20 @@ class Calculadora(QMainWindow):
 
         self.layoutCalculadora = QVBoxLayout()
         self.layoutTabla = QVBoxLayout()
-        self.layoutTabla.addWidget(self.tablaResultados)
 
-        # self.layout_principal.addLayout(self.layoutCalculadora)
         self.layout_principal.addLayout(self.layoutCalculadora)
         self.layout_principal.addLayout(self.layoutTabla)
 
-        # Llamamos al metodo que crea la entrada de texto
-        self.crearEntradaDeTexto()
+        self.layoutCajas = QGridLayout()
 
-        # Creamos los botonesMenuInquilinos
+        # Creamos las cajas que recolectan la informacion
+        self.crearCajas()
+
+        # Creamos los botones
         self.crearBotones()
 
         # Agregamos el QGridLayout al layout principal
-        self.layoutCalculadora.addLayout(self.layoutOpciones)
-        self.layoutCalculadora.addWidget(self.entrada_texto)
+        self.layoutCalculadora.addLayout(self.layoutCajas)
         self.layoutCalculadora.addLayout(self.grid_layout)
 
         # canvas = FigureCanvas(plt.figure())
@@ -60,34 +63,64 @@ class Calculadora(QMainWindow):
         # ax.text(0.5, 0.5, r'$\frac{a}{b} + \frac{c}{d} = \frac{ad + bc}{bd}$', fontsize=20, ha='center')
         # ax.axis('off')
 
-        self.layoutOpciones.addWidget(self.peticiones)
-        self.layoutOpciones.addWidget(self.cbMetodo)
-
         # Creamos un componente QWidget txtPara alojar al layout principal
-        self.componente_general = QWidget(self)
-        self.componente_general.setLayout(self.layout_principal)
+        self.componentesGeneral = QWidget(self)
+        self.componentesGeneral.setLayout(self.layout_principal)
 
         # Publicamos el componente general
-        self.setCentralWidget(self.componente_general)
+        self.setCentralWidget(self.componentesGeneral)
 
-    def crearEntradaDeTexto(self):
-        # Peticiones que se le haran al usuario
-        self.peticiones = QLabel()
-        self.peticiones.setFixedHeight(30)
-        self.peticiones.setText("Ingrese la funcion: ")
+    @staticmethod
+    def verificarCamposCompletos(cajas: list):
+        for caja in cajas:
+            if caja == "":
+                raise LlenarCamposVaciosException("Tienes que completar los campos necesarios")
 
-        self.cbMetodo = QComboBox()
-        self.cbMetodo.addItem("Biseccion", 0)
-        self.cbMetodo.addItem("Falsa Posicion", 1)
+    def crearCajas(self):
+
+        layoutIzquierda = QFormLayout()
+        layoutIzquierda.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layoutIzquierda.setLabelAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        layoutDerecha = QFormLayout()
+        layoutDerecha.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layoutDerecha.setLabelAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Creamos la entrada de texto
         self.entrada_texto: QLineEdit = QLineEdit()
-
-        # Modificamos algunas propiedades
-        self.entrada_texto.setMinimumHeight(100)
+        self.entrada_texto.setFixedHeight(50)
         self.entrada_texto.setReadOnly(True)
         self.entrada_texto.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.entrada_texto.setAlignment(Qt.AlignmentFlag.AlignRight)
+        layoutIzquierda.addRow(QLabelCustom("Funcion"), self.entrada_texto)
+
+        self.leA = QLineEdit()
+        self.leA.setFixedHeight(50)
+        layoutIzquierda.addRow(QLabelCustom("A"), self.leA)
+
+        self.eA = QLineEdit()
+        self.eA.setFixedHeight(50)
+        layoutIzquierda.addRow(QLabelCustom("Ea"), self.eA)
+
+        self.leIteraciones = QLineEdit()
+        self.leIteraciones.setFixedHeight(50)
+        layoutDerecha.addRow(QLabelCustom("Iteraciones"), self.leIteraciones)
+
+        self.leB = QLineEdit()
+        self.leB.setFixedHeight(50)
+        layoutDerecha.addRow(QLabelCustom("B"), self.leB)
+
+        self.cbMetodo = QComboBox()
+        self.cbMetodo.setFixedHeight(50)
+        self.cbMetodo.addItem("Biseccion", 0)
+        self.cbMetodo.addItem("Falsa Posicion", 1)
+        layoutDerecha.addRow(QLabelCustom("Metodo"), self.cbMetodo)
+
+        self.layoutCajas.addLayout(layoutIzquierda, 0, 0)
+        self.layoutCajas.addLayout(layoutDerecha, 0, 1)
+
+    # for caja, posicion in self.cajas.items():
+    #     self.layoutCajas.addWidget(caja, posicion[0], posicion[1], posicion[2], posicion[3])
 
     def crearBotones(self):
         # Creamos el grid layout donde estan estaran los botonesMenuInquilinos
@@ -126,7 +159,7 @@ class Calculadora(QMainWindow):
         for texto_boton, posicion in botones.items():
             self.botones[texto_boton] = QPushButton(texto_boton)
             self.botones[texto_boton].setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            self.botones[texto_boton].setMinimumSize(40, 40)
+            self.botones[texto_boton].setMinimumSize(40, 50)
             self.botones[texto_boton].pressed.connect(lambda k=texto_boton: self.botonPulsado(k))
 
             if texto_boton == "C":
@@ -176,50 +209,71 @@ class Calculadora(QMainWindow):
                 self.entrada_texto.insert(str(event.text()))
 
     def botonPulsado(self, textoBoton: str):
+        try:
+            if textoBoton == "C":
+                self.limpiarCajas()
+            elif textoBoton == "=":
+                if self.leIteraciones.text() and self.eA.text():
+                    QMessageBox.critical(self, "Error",
+                                         f"Ha ingresado las iteraciones y el error Absoluto, "
+                                         f"porfavor solo ingrese los datos de alguno de estas dos variables",
+                                         QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok)
+                else:
+                    # Guardamos los datos que se van pidiendo en la calculadora
+                    self.datosOperacion.update(
+                        {
+                            0: self.entrada_texto.text(),
+                            1: self.leIteraciones.text(),
+                            2: self.leA.text(),
+                            3: self.leB.text(),
+                            4: self.eA.text()
+                        }
+                    )
+                    self.ventanaResultados.show()
+                    #
 
-        peticiones = {
-            0: "Ingrese la funcion",
-            1: "Ingrese la cantidad de iteraciones",
-            2: "Ingrese el valor de A",
-            3: "Ingrese el valor de B",
-            4: "Ingrese el error porcentual al que desea llegar"
-        }
+                    self.retornarResultadoOperacion(self.datosOperacion)
 
-        # try:
-        if textoBoton == "C":
-            self.entrada_texto.clear()
-        elif textoBoton == "=":
-            if self.contadorPeticiones < 4:
-                self.contadorPeticiones += 1
-                self.peticiones.setText(peticiones[self.contadorPeticiones])
-                # Guardamos los datos que se van pidiendo en la calculadora
-                self.datosOperacion.update({self.contadorPeticiones - 1: self.entrada_texto.text()})
-                self.entrada_texto.clear()
+                    #
+
+                    self.contadorHistorialOperaciones += 1
+
+                    # Guardamos la infomacion de la calculadora al historial
+                    self.historialOperaciones.update({self.contadorHistorialOperaciones: self.datosOperacion})
+            elif textoBoton == "\u232B":
+                self.eliminarUltimoCaracter()
             else:
-                self.retornarResultadoOperacion(self.datosOperacion)
-                self.entrada_texto.clear()
-                self.contadorHistorialOperaciones += 1
-                self.historialOperaciones.update({self.contadorHistorialOperaciones: self.datosOperacion})
-        elif textoBoton == "\u232B":
-            self.eliminarUltimoCaracter()
-        else:
-            if self.entrada_texto.text() in ["Ocurrio un Error", "No puedes dividir por cero"]:
-                self.entrada_texto.clear()
-                self.entrada_texto.insert(textoBoton)
-            else:
-                self.entrada_texto.insert(textoBoton)
+                if self.entrada_texto.text() in ["Ocurrio un Error", "No puedes dividir por cero"]:
+                    self.entrada_texto.clear()
+                    self.entrada_texto.insert(textoBoton)
+                else:
+                    self.entrada_texto.insert(textoBoton)
+
+        except LlenarCamposVaciosException as e:
+            QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
+                                 QMessageBox.StandardButton.Ok)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
+                                 QMessageBox.StandardButton.Ok)
 
     # except ZeroDivisionError:
     # self.entrada_texto.clear()
     # self.entrada_texto.insert("No puedes Dividir por Cero")
     # except Exception as e:
-    ##  self.entrada_texto.clear()
+    # self.entrada_texto.clear()
     # self.entrada_texto.insert(f"Ocurrio un Error: {e}")
 
     def eliminarUltimoCaracter(self):
         texto = self.entrada_texto.text()
         self.entrada_texto.clear()
         self.entrada_texto.insert(texto[:-1])
+
+    def limpiarCajas(self):
+        self.entrada_texto.clear()
+        self.leIteraciones.clear()
+        self.eA.clear()
+        self.leA.clear()
+        self.leB.clear()
 
     def retornarResultadoOperacion(self, datosOperacion: dict):
         operacion: str = datosOperacion[0]
@@ -230,23 +284,55 @@ class Calculadora(QMainWindow):
                      .replace("e", "math.e")
                      .replace("^", "**"))
 
-        iteraciones: int = int(datosOperacion[1])
+        iteraciones = datosOperacion[1]
         a: float = float(datosOperacion[2])
         b: float = float(datosOperacion[3])
+        eaRequerido = datosOperacion[4]
 
         if self.cbMetodo.currentData() == 0:
             # Resolvemos por metodo de biseccion
-            metodoBiseccion = MetodoBiseccion(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
-            self.tablaResultados.actualizarTablaResultados(metodoBiseccion.calcularResultado())
+            metodoBiseccion = MetodoBiseccion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                              eaRequerido=eaRequerido)
+
+            if iteraciones != "":
+                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
+                    metodoBiseccion.calcularResultadoIteraciones())
+            elif eaRequerido != "":
+                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
+                    metodoBiseccion.calcularResultadoErrorAbsoluto()
+                )
 
         elif self.cbMetodo.currentData() == 1:
             # Resolvemos por metodo de falsa posicion
             metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
-            self.tablaResultados.actualizarTablaResultados(metodoFalsaPosicion.calcularResultado())
+            self.ventanaResultados.tablaResultados.actualizarTablaResultados(metodoFalsaPosicion.calcularResultado())
+
+
+class QLineEditCustom(QLineEdit):
+    def __init__(self, text: str == "", placeHolderText: str == ""):
+        super().__init__()
+
+        self.text = text
+        self.placeHolderText = placeHolderText
+
+        self.setPlaceholderText(self.placeHolderText)
+        self.setText(self.text)
+        self.setFixedHeight(40)
+
+
+class QLabelCustom(QLabel):
+    def __init__(self, text: str == ""):
+        super().__init__()
+
+        self.text: str = text
+        expand = QSizePolicy.Policy.Expanding
+
+        self.setText(self.text)
+        self.setSizePolicy(expand, expand)
 
 
 if __name__ == '__main__':
     app = QApplication([])
-    ventana = Calculadora()
+    ventana = RootFinder()
     ventana.show()
     app.exec()
