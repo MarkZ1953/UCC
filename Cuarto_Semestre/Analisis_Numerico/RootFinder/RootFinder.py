@@ -7,6 +7,7 @@ from Excepciones.Excepciones import LlenarCamposVaciosException
 from Metodos.Biseccion import MetodoBiseccion
 from Componentes.TablaResultados import TablaResultados
 from Metodos.FalsaPosicion import MetodoFalsaPosicion
+from Metodos.Secante import MetodoSecante
 
 
 class RootFinder(QMainWindow):
@@ -27,7 +28,7 @@ class RootFinder(QMainWindow):
         self.resize(800, 600)
         self.operaciones = {}
 
-        self.setWindowTitle("Calculadora")
+        self.setWindowTitle("RootFinder")
         # self.setFixedSize(235, 270)
 
         self.ventanaResultados = VentanaResultados()
@@ -114,6 +115,7 @@ class RootFinder(QMainWindow):
         self.cbMetodo.setFixedHeight(50)
         self.cbMetodo.addItem("Biseccion", 0)
         self.cbMetodo.addItem("Falsa Posicion", 1)
+        self.cbMetodo.addItem("Secante", 2)
         layoutDerecha.addRow(QLabelCustom("Metodo"), self.cbMetodo)
 
         self.layoutCajas.addLayout(layoutIzquierda, 0, 0)
@@ -209,52 +211,52 @@ class RootFinder(QMainWindow):
                 self.entrada_texto.insert(str(event.text()))
 
     def botonPulsado(self, textoBoton: str):
-        try:
-            if textoBoton == "C":
-                self.limpiarCajas()
-            elif textoBoton == "=":
-                if self.leIteraciones.text() and self.eA.text():
-                    QMessageBox.critical(self, "Error",
-                                         f"Ha ingresado las iteraciones y el error Absoluto, "
-                                         f"porfavor solo ingrese los datos de alguno de estas dos variables",
-                                         QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok)
-                else:
-                    # Guardamos los datos que se van pidiendo en la calculadora
-                    self.datosOperacion.update(
-                        {
-                            0: self.entrada_texto.text(),
-                            1: self.leIteraciones.text(),
-                            2: self.leA.text(),
-                            3: self.leB.text(),
-                            4: self.eA.text()
-                        }
-                    )
-                    self.ventanaResultados.show()
-                    #
-
-                    self.retornarResultadoOperacion(self.datosOperacion)
-
-                    #
-
-                    self.contadorHistorialOperaciones += 1
-
-                    # Guardamos la infomacion de la calculadora al historial
-                    self.historialOperaciones.update({self.contadorHistorialOperaciones: self.datosOperacion})
-            elif textoBoton == "\u232B":
-                self.eliminarUltimoCaracter()
+        # try:
+        if textoBoton == "C":
+            self.limpiarCajas()
+        elif textoBoton == "=":
+            if self.leIteraciones.text() and self.eA.text():
+                QMessageBox.critical(self, "Error",
+                                     f"Ha ingresado las iteraciones y el error Absoluto, "
+                                     f"porfavor solo ingrese los datos de alguno de estas dos variables",
+                                     QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Ok)
             else:
-                if self.entrada_texto.text() in ["Ocurrio un Error", "No puedes dividir por cero"]:
-                    self.entrada_texto.clear()
-                    self.entrada_texto.insert(textoBoton)
-                else:
-                    self.entrada_texto.insert(textoBoton)
+                # Guardamos los datos que se van pidiendo en la calculadora
+                self.datosOperacion.update(
+                    {
+                        0: self.entrada_texto.text(),
+                        1: self.leIteraciones.text(),
+                        2: self.leA.text(),
+                        3: self.leB.text(),
+                        4: self.eA.text()
+                    }
+                )
+                self.ventanaResultados.show()
+                #
 
-        except LlenarCamposVaciosException as e:
-            QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
-                                 QMessageBox.StandardButton.Ok)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
-                                 QMessageBox.StandardButton.Ok)
+                self.retornarResultadoOperacion(self.datosOperacion)
+
+                #
+
+                self.contadorHistorialOperaciones += 1
+
+                # Guardamos la infomacion de la calculadora al historial
+                self.historialOperaciones.update({self.contadorHistorialOperaciones: self.datosOperacion})
+        elif textoBoton == "\u232B":
+            self.eliminarUltimoCaracter()
+        else:
+            if self.entrada_texto.text() in ["Ocurrio un Error", "No puedes dividir por cero"]:
+                self.entrada_texto.clear()
+                self.entrada_texto.insert(textoBoton)
+            else:
+                self.entrada_texto.insert(textoBoton)
+
+        # except LlenarCamposVaciosException as e:
+        #     QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
+        #                          QMessageBox.StandardButton.Ok)
+        # except Exception as e:
+        #     QMessageBox.critical(self, "Error", f"{e}", QMessageBox.StandardButton.Ok,
+        #                          QMessageBox.StandardButton.Ok)
 
     # except ZeroDivisionError:
     # self.entrada_texto.clear()
@@ -296,16 +298,28 @@ class RootFinder(QMainWindow):
 
             if iteraciones != "":
                 self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoBiseccion.calcularResultadoIteraciones())
+                    metodoBiseccion.calcularResultadoIteraciones(),
+                    ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
+                )
             elif eaRequerido != "":
                 self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoBiseccion.calcularResultadoErrorAbsoluto()
+                    metodoBiseccion.calcularResultadoErrorAbsoluto(),
+                    ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
                 )
 
         elif self.cbMetodo.currentData() == 1:
             # Resolvemos por metodo de falsa posicion
             metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
-            self.ventanaResultados.tablaResultados.actualizarTablaResultados(metodoFalsaPosicion.calcularResultado())
+
+            self.ventanaResultados.tablaResultados.actualizarTablaResultados(
+                metodoFalsaPosicion.calcularResultado(),
+                ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
+            )
+
+        elif self.cbMetodo.currentData() == 2:
+            # Resolvemos por metodo de falsa posicion
+            metodoSecante = MetodoSecante(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
+            self.ventanaResultados.tablaResultados.actualizarTablaResultados(metodoSecante.calcularResultado())
 
 
 class QLineEditCustom(QLineEdit):
