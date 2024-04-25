@@ -1,5 +1,4 @@
-
-import math
+from sympy import sqrt, Symbol, sin, cos, tan, euler, pi
 
 
 class MetodoFalsaPosicion:
@@ -128,4 +127,3 @@ class MetodoFalsaPosicion:
                 break
 
         return self.resultados
-

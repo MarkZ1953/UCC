@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QMainWindow, QGridLayout, QPushButton, QWidget, QV
 from Componentes.VentanaResultados import VentanaResultados
 from Excepciones.Excepciones import LlenarCamposVaciosException
 from Metodos.Biseccion import MetodoBiseccion
-from Componentes.TablaResultados import TablaResultados
 from Metodos.FalsaPosicion import MetodoFalsaPosicion
+from Metodos.NewtonRaphson import MetodoNewtonRaphson
 from Metodos.Secante import MetodoSecante
 from Utiles import Etiqueta
 
@@ -129,6 +129,7 @@ class RootFinder(QMainWindow):
         self.cbMetodo.addItem("Biseccion", 0)
         self.cbMetodo.addItem("Falsa Posicion", 1)
         self.cbMetodo.addItem("Secante", 2)
+        self.cbMetodo.addItem("Newton Raphson", 3)
         layoutDerecha.addRow(QLabelCustom("Metodo"), self.cbMetodo)
 
         self.layoutCajas.addLayout(layoutIzquierda, 0, 0)
@@ -184,7 +185,11 @@ class RootFinder(QMainWindow):
             "X": (6, 0),
             "e": (6, 1),
             "pi": (6, 2),
-            "^": (6, 3)
+            "^": (6, 3),
+            "\u221A": (7, 0),
+            "arcsin": (7, 1),
+            "arccos": (7, 2),
+            "arctan": (7, 3),
         }
 
         for texto_boton, posicion in botones.items():
@@ -310,11 +315,18 @@ class RootFinder(QMainWindow):
     def retornarResultadoOperacion(self, datosOperacion: dict):
         operacion: str = datosOperacion[0]
 
-        operacion = (operacion.replace("sen", "math.sin")
-                     .replace("tan", "math.tan")
-                     .replace("cos", "math.cos")
-                     .replace("e", "math.e")
-                     .replace("^", "**"))
+        operacion = (operacion.replace("sen", "sin")
+                     .replace("tan", "tan")
+                     .replace("cos", "cos")
+                     .replace("csc", "csc")
+                     .replace("e", "euler")
+                     .replace("pi", "pi")
+                     .replace("^", "**")
+                     .replace("\u221A", "sqrt")
+                     .replace("arcsen", "asin")
+                     .replace("arctan", "atan")
+                     .replace("arccos", "acos")
+                     .replace("arccsc", "acsc"))
 
         iteraciones = datosOperacion[1]
         a: float = float(datosOperacion[2])
@@ -337,28 +349,33 @@ class RootFinder(QMainWindow):
             # Metodo de Biseccion
             cabezeras = ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
             metodoSeleccionado = MetodoBiseccion
+
+            # Resolvemos por metodo de Biseccion
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
         elif idMetodoSeleccionado == 1:
             # Metodo de Falsa Posicion
             cabezeras = ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
             metodoSeleccionado = MetodoFalsaPosicion
+
+            # Resolvemos por metodo de Falsa Posicion
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
         elif idMetodoSeleccionado == 2:
             # Metodo de la Secante
             cabezeras = ["Iteracion", "Xi-1", "Xi", "F(xi)", F"(xi-1)", "Ea (%)"]
             metodoSeleccionado = MetodoSecante
 
-        if idMetodoSeleccionado == 0:
-            # Resolvemos por metodo de Biseccion
-            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
-                                                    eaRequerido=eaRequerido)
-
-        elif idMetodoSeleccionado == 1:
-            # Resolvemos por metodo de Falsa Posicion
-            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
-                                                    eaRequerido=eaRequerido)
-
-        elif idMetodoSeleccionado == 2:
             # Resolvemos por metodo de la Secante
             metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
+        elif idMetodoSeleccionado == 3:
+            # Metodo de la Secante
+            cabezeras = ["Iteracion", "Xi", "F(xi)", "F'(xi)", "Ea (%)"]
+            metodoSeleccionado = MetodoNewtonRaphson
+
+            # Resolvemos por metodo de la Secante
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a,
                                                     eaRequerido=eaRequerido)
 
         if iteraciones != "":

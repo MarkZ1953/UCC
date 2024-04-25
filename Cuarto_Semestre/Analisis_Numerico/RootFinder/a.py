@@ -1,14 +1,14 @@
-import sympy as sp
+from sympy import sqrt, Symbol, sin, cos, tan, diff
 import math
 
 # Define la variable simbólica
-x = sp.Symbol('x')
+x = Symbol('x')
 
 # Define la función que quieres derivar
-f = sp.sin(sp.sqrt(x)) - x
+f = sin(sqrt(x)) - x
 
 # Deriva la función con respecto a x
-f_derivada = sp.diff(f, x)
+f_derivada = diff(f, x)
 
 # Imprime la función derivada
 print("La derivada de la función es:", f_derivada)

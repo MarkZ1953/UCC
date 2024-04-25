@@ -1,4 +1,4 @@
-import math
+from sympy import sqrt, Symbol, sin, cos, tan, euler, pi
 
 
 class MetodoBiseccion:
