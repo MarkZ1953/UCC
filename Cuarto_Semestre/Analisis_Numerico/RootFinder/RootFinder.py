@@ -356,26 +356,15 @@ class RootFinder(QMainWindow):
             elif eaRequerido != "":
                 resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
 
-            self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
-
         elif idMetodoSeleccionado == 1:
+            # Resolvemos por metodo de Falsa Posicion
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
+
             if iteraciones != "":
-                # Resolvemos por metodo de falsa posicion
-                metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
-                                                          eaRequerido=eaRequerido)
-
-                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoFalsaPosicion.calcularResultadoIteraciones(), cabezeras
-                )
-
+                resultado = metodoSeleccionado.calcularResultadoIteraciones()
             elif eaRequerido != "":
-                # Resolvemos por metodo de falsa posicion
-                metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
-                                                          eaRequerido=eaRequerido)
-
-                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoFalsaPosicion.calcularResultadoErrorAbsoluto(), cabezeras
-                )
+                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
 
         elif idMetodoSeleccionado == 2:
             # Resolvemos por metodo de la Secante
@@ -387,7 +376,7 @@ class RootFinder(QMainWindow):
             elif eaRequerido != "":
                 resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
 
-            self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
+        self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
 
 
 class QLineEditCustom(QLineEdit):
