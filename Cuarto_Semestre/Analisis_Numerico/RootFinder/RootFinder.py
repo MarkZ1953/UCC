@@ -351,30 +351,20 @@ class RootFinder(QMainWindow):
             metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
                                                     eaRequerido=eaRequerido)
 
-            if iteraciones != "":
-                resultado = metodoSeleccionado.calcularResultadoIteraciones()
-            elif eaRequerido != "":
-                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
-
         elif idMetodoSeleccionado == 1:
             # Resolvemos por metodo de Falsa Posicion
             metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
                                                     eaRequerido=eaRequerido)
-
-            if iteraciones != "":
-                resultado = metodoSeleccionado.calcularResultadoIteraciones()
-            elif eaRequerido != "":
-                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
 
         elif idMetodoSeleccionado == 2:
             # Resolvemos por metodo de la Secante
             metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
                                                     eaRequerido=eaRequerido)
 
-            if iteraciones != "":
-                resultado = metodoSeleccionado.calcularResultadoIteraciones()
-            elif eaRequerido != "":
-                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
+        if iteraciones != "":
+            resultado = metodoSeleccionado.calcularResultadoIteraciones()
+        elif eaRequerido != "":
+            resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
 
         self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
 
