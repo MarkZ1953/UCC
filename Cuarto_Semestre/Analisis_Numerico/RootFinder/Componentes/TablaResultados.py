@@ -31,6 +31,10 @@ class TablaResultados(QTableWidget):
 
         columnsLength = len(cabezeras)
 
+        # Limpiamos la tabla antes de ingresar los datos
+        self.clearContents()
+        self.setRowCount(0)
+
         # Se asignan la cantidad de columnas que va a tener la tabla
         self.setColumnCount(columnsLength)
 
@@ -40,12 +44,11 @@ class TablaResultados(QTableWidget):
         for iteracion, resultado in resultadosOperacion.items():
             self.insertRow(iteracion)
             self.setRowHeight(iteracion, 30)
-            
+
             for column in range(columnsLength):
                 if column == 0:
                     self.crearItem(row=iteracion, column=column, value=str(iteracion + 1), editable=False)
                 else:
-                    print(resultado[column - 1])
                     self.crearItem(row=iteracion, column=column, value=str(resultado[column - 1]), editable=False)
 
             # if reserva.estadoR == "Pendiente":

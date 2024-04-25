@@ -21,7 +21,7 @@ class MetodoBiseccion:
 
     def calcularResultadoErrorAbsoluto(self):
 
-        while self.ea >= float(self.eaRequerido):
+        while True:
             self.data = []
 
             cAnterior = self.cActual
@@ -69,6 +69,9 @@ class MetodoBiseccion:
 
             self.resultados.update({self.contadorResultados: self.data})
             self.contadorResultados += 1
+
+            if self.ea <= float(self.eaRequerido):
+                break
 
         return self.resultados
 

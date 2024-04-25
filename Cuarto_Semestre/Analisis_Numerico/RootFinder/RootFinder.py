@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QGridLayout, QPushButton, QWidget, QVBoxLayout, QLineEdit, \
-    QSizePolicy, QApplication, QLabel, QHBoxLayout, QComboBox, QFormLayout, QMessageBox
+    QSizePolicy, QApplication, QLabel, QHBoxLayout, QComboBox, QFormLayout, QMessageBox, QFrame
 
 from Componentes.VentanaResultados import VentanaResultados
 from Excepciones.Excepciones import LlenarCamposVaciosException
@@ -8,6 +8,7 @@ from Metodos.Biseccion import MetodoBiseccion
 from Componentes.TablaResultados import TablaResultados
 from Metodos.FalsaPosicion import MetodoFalsaPosicion
 from Metodos.Secante import MetodoSecante
+from Utiles import Etiqueta
 
 
 class RootFinder(QMainWindow):
@@ -25,7 +26,8 @@ class RootFinder(QMainWindow):
         self.botones = {}
         self.grid_layout = None
         self.entrada_texto = None
-        self.resize(800, 600)
+        # self.resize(800, 600)
+        self.setFixedSize(650, 750)
         self.operaciones = {}
 
         self.setWindowTitle("RootFinder")
@@ -35,6 +37,8 @@ class RootFinder(QMainWindow):
 
         # Creamos un layout principal
         self.layout_principal = QVBoxLayout()
+
+        self.__crearAreaTitulo()
 
         self.layoutOpciones = QHBoxLayout()
 
@@ -46,7 +50,7 @@ class RootFinder(QMainWindow):
 
         self.layoutCajas = QGridLayout()
 
-        # Creamos las cajas que recolectan la informacion
+        # Creamos las cajas que recolectan la información
         self.crearCajas()
 
         # Creamos los botones
@@ -67,6 +71,15 @@ class RootFinder(QMainWindow):
         # Creamos un componente QWidget txtPara alojar al layout principal
         self.componentesGeneral = QWidget(self)
         self.componentesGeneral.setLayout(self.layout_principal)
+
+        frameTitulo = QFrame()
+        frameTitulo.setFixedHeight(40)
+        frameTitulo.setStyleSheet("background-color: rgb(14, 49, 129);")
+
+        layoutTitulo = QHBoxLayout()
+        frameTitulo.setLayout(layoutTitulo)
+
+        self.layout_principal.addWidget(frameTitulo)
 
         # Publicamos el componente general
         self.setCentralWidget(self.componentesGeneral)
@@ -124,8 +137,24 @@ class RootFinder(QMainWindow):
     # for caja, posicion in self.cajas.items():
     #     self.layoutCajas.addWidget(caja, posicion[0], posicion[1], posicion[2], posicion[3])
 
+    def __crearAreaTitulo(self):
+
+        frameTitulo = QFrame()
+        frameTitulo.setFixedHeight(80)
+        frameTitulo.setStyleSheet("background-color: rgb(14, 49, 129);")
+
+        layoutTitulo = QHBoxLayout()
+        frameTitulo.setLayout(layoutTitulo)
+
+        titulo = Etiqueta(texto="RootFinder", bold=True, font="Arial", font_size=16)
+        titulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        titulo.setStyleSheet("color: white;")
+        layoutTitulo.addWidget(titulo)
+
+        self.layout_principal.addWidget(frameTitulo)
+
     def crearBotones(self):
-        # Creamos el grid layout donde estan estaran los botonesMenuInquilinos
+        # Creamos el grid layout donde están estarán los botonesMenuInquilinos
         self.grid_layout = QGridLayout()
 
         botones = {
@@ -163,6 +192,7 @@ class RootFinder(QMainWindow):
             self.botones[texto_boton].setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.botones[texto_boton].setMinimumSize(40, 50)
             self.botones[texto_boton].pressed.connect(lambda k=texto_boton: self.botonPulsado(k))
+            # self.botones[texto_boton].setStyleSheet("QPushButton { border-radius: 10px;}")
 
             if texto_boton == "C":
                 self.botones[texto_boton].setShortcut(Qt.Key.Key_Delete)
@@ -291,35 +321,73 @@ class RootFinder(QMainWindow):
         b: float = float(datosOperacion[3])
         eaRequerido = datosOperacion[4]
 
-        if self.cbMetodo.currentData() == 0:
-            # Resolvemos por metodo de biseccion
-            metodoBiseccion = MetodoBiseccion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
-                                              eaRequerido=eaRequerido)
+        # Obtenemos el ID del metodo seleccionado
+        idMetodoSeleccionado: int = self.cbMetodo.currentData()
+
+        # Creamos una variable para almacenar el metodo seleccionado
+        metodoSeleccionado = None
+
+        # Creamos un diccionario para almacenar los valores retornados por los metodos
+        resultado: dict = {}
+
+        # Creamos una lista que almacene las cabezeras que tendra la tabla de resultados
+        cabezeras: list = []
+
+        if idMetodoSeleccionado == 0:
+            # Metodo de Biseccion
+            cabezeras = ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
+            metodoSeleccionado = MetodoBiseccion
+        elif idMetodoSeleccionado == 1:
+            # Metodo de Falsa Posicion
+            cabezeras = ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
+            metodoSeleccionado = MetodoFalsaPosicion
+        elif idMetodoSeleccionado == 2:
+            # Metodo de la Secante
+            cabezeras = ["Iteracion", "Xi-1", "Xi", "F(xi)", F"(xi-1)", "Ea (%)"]
+            metodoSeleccionado = MetodoSecante
+
+        if idMetodoSeleccionado == 0:
+            # Resolvemos por metodo de Biseccion
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
 
             if iteraciones != "":
-                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoBiseccion.calcularResultadoIteraciones(),
-                    ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
-                )
+                resultado = metodoSeleccionado.calcularResultadoIteraciones()
             elif eaRequerido != "":
+                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
+
+            self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
+
+        elif idMetodoSeleccionado == 1:
+            if iteraciones != "":
+                # Resolvemos por metodo de falsa posicion
+                metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                          eaRequerido=eaRequerido)
+
                 self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                    metodoBiseccion.calcularResultadoErrorAbsoluto(),
-                    ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
+                    metodoFalsaPosicion.calcularResultadoIteraciones(), cabezeras
                 )
 
-        elif self.cbMetodo.currentData() == 1:
-            # Resolvemos por metodo de falsa posicion
-            metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
+            elif eaRequerido != "":
+                # Resolvemos por metodo de falsa posicion
+                metodoFalsaPosicion = MetodoFalsaPosicion(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                          eaRequerido=eaRequerido)
 
-            self.ventanaResultados.tablaResultados.actualizarTablaResultados(
-                metodoFalsaPosicion.calcularResultado(),
-                ["Iteracion", "a", "b", "c", "f(a)", "f(b)", "f(ci)", "f(a) * f(ci)", "f(b) * f(ci)", "Ea (%)"]
-            )
+                self.ventanaResultados.tablaResultados.actualizarTablaResultados(
+                    metodoFalsaPosicion.calcularResultadoErrorAbsoluto(), cabezeras
+                )
 
-        elif self.cbMetodo.currentData() == 2:
-            # Resolvemos por metodo de falsa posicion
-            metodoSecante = MetodoSecante(funcion=operacion, iteraciones=iteraciones, a=a, b=b)
-            self.ventanaResultados.tablaResultados.actualizarTablaResultados(metodoSecante.calcularResultado())
+        elif idMetodoSeleccionado == 2:
+            # Resolvemos por metodo de la Secante
+            metodoSeleccionado = metodoSeleccionado(funcion=operacion, iteraciones=iteraciones, a=a, b=b,
+                                                    eaRequerido=eaRequerido)
+
+            if iteraciones != "":
+                resultado = metodoSeleccionado.calcularResultadoIteraciones()
+            elif eaRequerido != "":
+                resultado = metodoSeleccionado.calcularResultadoErrorAbsoluto()
+
+            self.ventanaResultados.tablaResultados.actualizarTablaResultados(resultado, cabezeras)
 
 
 class QLineEditCustom(QLineEdit):
